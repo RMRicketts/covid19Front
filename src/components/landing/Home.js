@@ -2,17 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import axios from "axios";
-import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
-import { getData } from "../../redux/actions";
+import { getData, loadStates, updateState } from "../../redux/actions";
 import DisplayTable from "../reports/Table.js";
 import Chart from "../reports/Chart.js";
-import moment from "moment";
 
 const useStyles = theme => ({
   root: {
@@ -48,7 +44,7 @@ const useStyles = theme => ({
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
-    height: "80vh"
+    height: "82vh"
   },
   content: {
     flexGrow: 1,
@@ -70,6 +66,9 @@ class Home extends Component {
   async getData(params) {
     try {
       await this.props.getData();
+      this.props.loadStates(this.props.data);
+      this.props.updateState(this.props.match.params.state);
+      console.log(this.props);
     } catch (e) {
       console.log(e);
     }
@@ -81,6 +80,10 @@ class Home extends Component {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  componentDidUpdate() {
+    this.props.updateState(this.props.match.params.state);
   }
 
   async componentDidMount() {
@@ -99,12 +102,13 @@ class Home extends Component {
           <Container maxWidth="lg" className={this.props.classes.container}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper display="flex">{/*className={this.props.classes.paperl}>*/}
-                  {this.props.data === undefined ? (
+                <Paper display="flex">
+                  {/*className={this.props.classes.paperl}>*/}
+                  {this.props.state === "" ? (
                     <div />
                   ) : (
                     <DisplayTable
-                      data={this.props.data[this.state.key]}
+                      data={this.props.data[this.props.state]}
                       title="Statistics"
                     />
                   )}
@@ -112,16 +116,64 @@ class Home extends Component {
               </Grid>
               <Grid item xs={12}>
                 <Paper className={this.props.classes.paperxl}>
-                  {this.props.data === undefined ? (
+                  {this.props.state === "" ? (
                     <div />
                   ) : (
                     <Chart
-                      data={this.props.data[this.state.key]}
-                      title="Covid Over Time"
+                      data={this.props.data[this.props.state]}
+                      title={`Daily Statistics for ${this.props.state}`}
+                      keys={["positive", "recovered", "death", "hospitalizedCurrently"]}
                     />
                   )}
                 </Paper>
               </Grid>
+              <Grid item xs={12}>
+                <Paper className={this.props.classes.paperxl}>
+                  {this.props.state === "" ? (
+                    <div />
+                  ) : (
+                    <Chart
+                      data={this.props.data[this.props.state]}
+                      title={`Daily Increase Rates for ${this.props.state}`}
+                      keys={[
+                        "positiveIncrease",
+                        "deathIncrease",
+                        "hospitalizedIncrease"
+                      ]}
+                    />
+                  )}
+                </Paper>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.props.classes.paperxl}>
+                {this.props.state === "" ? (
+                  <div />
+                ) : (
+                  <Chart
+                    data={this.props.data[this.props.state]}
+                    title={`Daily Testing Rates for ${this.props.state}`}
+                    keys={["totalTestResults", "positive", "negative"]}
+                  />
+                )}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.props.classes.paperxl}>
+                {this.props.state === "" ? (
+                  <div />
+                ) : (
+                  <Chart
+                    data={this.props.data[this.props.state]}
+                    title={`Daily Testing Increase Rates for ${this.props.state}`}
+                    keys={[
+                      "totalTestResultsIncrease",
+                      "positiveIncrease",
+                      "negativeIncrease"
+                    ]}
+                  />
+                )}
+              </Paper>
             </Grid>
           </Container>
         </main>
@@ -131,11 +183,12 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-  data: state.getData.covidData
+  data: state.getData.covidData,
+  state: state.updateState.state
 });
 
 const mapDispatchToProps = (dispatch, props) =>
-  bindActionCreators({ getData }, dispatch);
+  bindActionCreators({ getData, loadStates, updateState }, dispatch);
 
 export default withRouter(
   connect(

@@ -1,6 +1,6 @@
 import api from "../../apis";
 import axios from "axios";
-import moment from 'moment';
+import moment from "moment";
 
 export const getData = query => {
   return async (dispatch, getState) => {
@@ -10,10 +10,10 @@ export const getData = query => {
     } catch (e) {
       throw e;
     }
-    
-    for(let key of Object.keys(response.data.covidData)){
-      for(let row of response.data.covidData[key]){
-        row.date = moment.utc(row.date).format("MM-DD-YYYY")
+
+    for (let key of Object.keys(response.data.covidData)) {
+      for (let row of response.data.covidData[key]) {
+        row.date = moment.utc(row.date).format("MM-DD-YYYY");
       }
     }
 
@@ -24,7 +24,7 @@ export const getData = query => {
   };
 };
 
-export const login = async creds => {
+export const login = creds => {
   return async (dispatch, getState) => {
     const response = await axios.post("login", creds);
 
@@ -32,5 +32,34 @@ export const login = async creds => {
       type: "LOGIN",
       payload: response.data
     });
+  };
+};
+
+export const create = userInfo => {
+  return async (dispatch, getState) => {
+    const response = axios.post("createUser", userInfo);
+
+    dispatch({
+      type: "LOGIN",
+      payload: response.data
+    });
+  };
+};
+
+export const loadStates = data => {
+  return {
+    type: "LOAD_STATES",
+    payload: {
+      states: Object.keys(data).sort()
+    }
+  };
+};
+
+export const updateState = name => {
+  return {
+    type: "UPDATE_STATE",
+    payload: {
+      state: name
+    }
   };
 };

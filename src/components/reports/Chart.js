@@ -44,7 +44,14 @@ class CustomizedAxisTick extends React.PureComponent {
 }
 
 export default function Chart(props) {
-  console.log(props.data);
+  const colors = [
+    "#845EC2",
+    "#D65DB1",
+    "#FF6F91",
+    "#FF9671",
+    "#FFC75F",
+    "#F9F871"
+  ];
   return (
     <React.Fragment>
       <Title>{props.title}</Title>
@@ -65,27 +72,18 @@ export default function Chart(props) {
             </Label>
           </YAxis>
           <Tooltip />
-          <Line
-            type="monotone"
-            dataKey="positiveIncrease"
-            stroke="#556CD6"
-            dot={false}
-            label={<CustomizedLabel />}
-          />
-          <Line
-            type="monotone"
-            dataKey="deathIncrease"
-            stroke="#50C878"
-            dot={false}
-            label={<CustomizedLabel />}
-          />
-          <Line
-            type="monotone"
-            dataKey="hospitalizedIncrease"
-            stroke="#FFEA00"
-            dot={false}
-            label={<CustomizedLabel />}
-          />
+          {props.keys.map((key, i) => {
+            return (
+              <Line
+                type="monotone"
+                key={key}
+                dataKey={key}
+                stroke={colors[i % colors.length]}
+                dot={false}
+                label={<CustomizedLabel />}
+              />
+            );
+          })}
         </LineChart>
       </ResponsiveContainer>
     </React.Fragment>

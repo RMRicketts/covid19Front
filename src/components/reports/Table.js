@@ -8,7 +8,6 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Title from "./Title";
@@ -132,66 +131,66 @@ const DisplayTable = props => {
 
   return (
     <div className={classes.root}>
-      <Title>{props.title}</Title>
-      <Table className={classes.table} size="small">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-          headRows={tableHeaders}
-        />
-        <TableBody>
-          {stableSort(props.data, getSorting(order, orderBy))
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((dd, index) => {
-              return (
-                <TableRow key={dd[tableHeaders[0].id]}>
-                  {tableHeaders.map((h, i) => {
-                    if (i === 0) {
+        <Title>{props.title}</Title>
+        <Table className={classes.table} size="small">
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+            headRows={tableHeaders}
+          />
+          <TableBody>
+            {stableSort(props.data, getSorting(order, orderBy))
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((dd, index) => {
+                return (
+                  <TableRow key={dd[tableHeaders[0].id]}>
+                    {tableHeaders.map((h, i) => {
+                      if (i === 0) {
+                        return (
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            key={dd[tableHeaders[0].id] + "-" + h.id}
+                          >
+                            {dd[h.id]}
+                          </TableCell>
+                        );
+                      }
                       return (
                         <TableCell
-                          component="th"
-                          scope="row"
+                          align="right"
                           key={dd[tableHeaders[0].id] + "-" + h.id}
                         >
                           {dd[h.id]}
                         </TableCell>
                       );
-                    }
-                    return (
-                      <TableCell
-                        align="right"
-                        key={dd[tableHeaders[0].id] + "-" + h.id}
-                      >
-                        {dd[h.id]}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 33 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 15]}
-        component="div"
-        count={props.data.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        backIconButtonProps={{
-          "aria-label": "Previous Page"
-        }}
-        nextIconButtonProps={{
-          "aria-label": "Next Page"
-        }}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+                    })}
+                  </TableRow>
+                );
+              })}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 33 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 15]}
+          component="div"
+          count={props.data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            "aria-label": "Previous Page"
+          }}
+          nextIconButtonProps={{
+            "aria-label": "Next Page"
+          }}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
     </div>
   );
 };

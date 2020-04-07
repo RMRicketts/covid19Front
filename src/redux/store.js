@@ -22,13 +22,23 @@ const composedEnhancers = compose(
   ...enhancers
 );
 
-const initialState = {
-  data: [],
-  accessToken: ""
-};
+let initialState = {
+  login: {
+    authorization: ''
+  },
+  getData: {
+    data: []
+  },
+  updateState: {
+    state: ""
+  },
+  states: {
+    states: []
+  }
+}
 
 export default createStore(
   createRootReducer(history),
-  {},
+  initialState,
   composedEnhancers
 );
