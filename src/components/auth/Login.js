@@ -1,49 +1,131 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withStyles } from "@material-ui/core/styles";
-import axios from 'axios';
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import FormControl from "@material-ui/core/FormControl";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import { login, create } from "../../redux/actions";
-import Create from "./Create.js";
 
-const useStyles = theme => {};
+const useStyles = theme => ({
+  center: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "70%"
+  },
+  container: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(1)
+  }
+});
 
 class Login extends Component {
   constructor(props) {
     super();
-    this.state = {};
-    this.updateField = this.updateField.bind(this)
-    this.postLogin = this.postLogin.bind(this);
-    this.postCreate = this.postCreate.bind(this);
+    this.state = { create: false, disabled: false };
+    this.updateField = this.updateField.bind(this);
+    this.updateToken = this.updateToken.bind(this);
   }
 
-  updateField(e) => {
-    console.log(e)
-    //this.setState({})
+  updateField(e) {
+    let update = {};
+    update[e.target.getAttribute("id")] = e.target.value;
+    this.setState(update, () => {
+      console.log(this.state);
+    });
   }
 
-  async postLogin(e) => {
-    let pkg = {
-      method: "POST",
-      url: "http://localhost:8080",
-      data: {}
+  async updateToken(method) {
+    let { pw, userName } = this.state;
+    if (
+      userName === undefined ||
+      pw === undefined ||
+      userName.length === 0 ||
+      pw.length === 0
+    ) {
+      return;
     }
-
-    pkg.data.userName = this.state.userName
-    pkg.data.pw = this.state.pw
-
-    axios(pkg)
+    this.setState({ disabled: true }, () => {
+      console.log(method);
+      let pkg = {};
+      pkg.userName = userName;
+      pkg.pw = pw;
+      //this.props.login({});
+      this.setState({ disabled: false });
+    });
   }
 
   render() {
-    <div>
-      {}
-    </div
+    const { classes } = this.props;
+    return (
+      <Container className={classes.container}>
+        <Paper className={classes.center}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <TextField
+                  onChange={this.updateField}
+                  label="User Name"
+                  id="userName"
+                  variant="outlined"
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <TextField
+                  onChange={this.updateField}
+                  label="Password"
+                  id="pw"
+                  variant="outlined"
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <ButtonGroup
+                  variant="text"
+                  color="primary"
+                  size="large"
+                  aria-label="selection button group"
+                  className={classes.center}
+                >
+                  <Button
+                    key="loginButton"
+                    id="login"
+                    disabled={this.state.disabled}
+                    onClick={e => {
+                      this.updateToken("login");
+                    }}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    key="createButton"
+                    id="create"
+                    disabled={this.state.disabled}
+                    onClick={e => {
+                      this.updateToken("create");
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </ButtonGroup>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Container>
+    );
   }
-
 }
 
 const mapStateToProps = state => ({
@@ -51,9 +133,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, props) =>
-  bindActionCreators({ create, login }, dispatch);
+  bindActionCreators({ login, create }, dispatch);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(Login));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(useStyles)(Login))
+);
