@@ -65,7 +65,7 @@ const Navbar = props => {
                     key={state}
                     onClick={handleClose}
                     component={Link}
-                    to={`/${state}`}
+                    to={`/reports/${state}`}
                   >
                     {state}
                   </MenuItem>

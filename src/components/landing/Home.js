@@ -25,26 +25,11 @@ const useStyles = theme => ({
     paddingTop: theme.spacing(0),
     paddingBottom: theme.spacing(1)
   },
-  paper: {
-    padding: theme.spacing(1),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-    height: 225
-  },
-  paperl: {
-    padding: theme.spacing(1),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-    height: 360
-  },
   paperxl: {
     padding: theme.spacing(1),
     display: "flex",
-    overflow: "auto",
     flexDirection: "column",
-    height: "82vh"
+    height: "41vh"
   },
   content: {
     flexGrow: 1,
@@ -103,7 +88,6 @@ class Home extends Component {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper display="flex">
-                  {/*className={this.props.classes.paperl}>*/}
                   {this.props.state === "" ? (
                     <div />
                   ) : (
@@ -122,7 +106,12 @@ class Home extends Component {
                     <Chart
                       data={this.props.data[this.props.state]}
                       title={`Daily Statistics for ${this.props.state}`}
-                      keys={["positive", "recovered", "death", "hospitalizedCurrently"]}
+                      keys={[
+                        "positive",
+                        "recovered",
+                        "death",
+                        "hospitalizedCurrently"
+                      ]}
                     />
                   )}
                 </Paper>
@@ -144,36 +133,38 @@ class Home extends Component {
                   )}
                 </Paper>
               </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={this.props.classes.paperxl}>
-                {this.props.state === "" ? (
-                  <div />
-                ) : (
-                  <Chart
-                    data={this.props.data[this.props.state]}
-                    title={`Daily Testing Rates for ${this.props.state}`}
-                    keys={["totalTestResults", "positive", "negative"]}
-                  />
-                )}
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={this.props.classes.paperxl}>
-                {this.props.state === "" ? (
-                  <div />
-                ) : (
-                  <Chart
-                    data={this.props.data[this.props.state]}
-                    title={`Daily Testing Increase Rates for ${this.props.state}`}
-                    keys={[
-                      "totalTestResultsIncrease",
-                      "positiveIncrease",
-                      "negativeIncrease"
-                    ]}
-                  />
-                )}
-              </Paper>
+              <Grid item xs={12}>
+                <Paper className={this.props.classes.paperxl}>
+                  {this.props.state === "" ? (
+                    <div />
+                  ) : (
+                    <Chart
+                      data={this.props.data[this.props.state]}
+                      title={`Daily Testing Rates for ${this.props.state}`}
+                      keys={["totalTestResults", "positive", "negative"]}
+                    />
+                  )}
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper className={this.props.classes.paperxl}>
+                  {this.props.state === "" ? (
+                    <div />
+                  ) : (
+                    <Chart
+                      data={this.props.data[this.props.state]}
+                      title={`Daily Testing Increase Rates for ${
+                        this.props.state
+                      }`}
+                      keys={[
+                        "totalTestResultsIncrease",
+                        "positiveIncrease",
+                        "negativeIncrease"
+                      ]}
+                    />
+                  )}
+                </Paper>
+              </Grid>
             </Grid>
           </Container>
         </main>

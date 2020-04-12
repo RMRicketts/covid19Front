@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 
 import Navbar from "./assets/Navbar";
 import Home from "./landing/Home";
-import Login from '
+import Login from "./auth/Login";
 import { getData } from "../redux/actions";
 
 class App extends React.Component {
@@ -19,8 +19,8 @@ class App extends React.Component {
       <div>
         <Navbar />
         <main>
-          <Route path="/data/:state" component={Home} />
-          <Rooute exact path="/login" component={Login} />
+          <Route path="/reports/:state" component={Home} />
+          <Route exact path="/login" component={Login} />
         </main>
       </div>
     );
