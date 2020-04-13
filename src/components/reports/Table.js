@@ -19,10 +19,6 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     minWidth: 650
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2)
   }
 }));
 
@@ -131,66 +127,66 @@ const DisplayTable = props => {
 
   return (
     <div className={classes.root}>
-        <Title>{props.title}</Title>
-        <Table className={classes.table} size="small">
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-            headRows={tableHeaders}
-          />
-          <TableBody>
-            {stableSort(props.data, getSorting(order, orderBy))
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((dd, index) => {
-                return (
-                  <TableRow key={dd[tableHeaders[0].id]}>
-                    {tableHeaders.map((h, i) => {
-                      if (i === 0) {
-                        return (
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            key={dd[tableHeaders[0].id] + "-" + h.id}
-                          >
-                            {dd[h.id]}
-                          </TableCell>
-                        );
-                      }
+      <Title>{props.title}</Title>
+      <Table className={classes.table} size="small">
+        <EnhancedTableHead
+          order={order}
+          orderBy={orderBy}
+          onRequestSort={handleRequestSort}
+          headRows={tableHeaders}
+        />
+        <TableBody>
+          {stableSort(props.data, getSorting(order, orderBy))
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((dd, index) => {
+              return (
+                <TableRow key={dd[tableHeaders[0].id]}>
+                  {tableHeaders.map((h, i) => {
+                    if (i === 0) {
                       return (
                         <TableCell
-                          align="right"
+                          component="th"
+                          scope="row"
                           key={dd[tableHeaders[0].id] + "-" + h.id}
                         >
                           {dd[h.id]}
                         </TableCell>
                       );
-                    })}
-                  </TableRow>
-                );
-              })}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 33 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={props.data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            "aria-label": "Previous Page"
-          }}
-          nextIconButtonProps={{
-            "aria-label": "Next Page"
-          }}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+                    }
+                    return (
+                      <TableCell
+                        align="right"
+                        key={dd[tableHeaders[0].id] + "-" + h.id}
+                      >
+                        {dd[h.id]}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          {emptyRows > 0 && (
+            <TableRow style={{ height: 33 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10]}
+        component="div"
+        count={props.data.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        backIconButtonProps={{
+          "aria-label": "Previous Page"
+        }}
+        nextIconButtonProps={{
+          "aria-label": "Next Page"
+        }}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </div>
   );
 };
