@@ -128,7 +128,7 @@ const DisplayTable = props => {
   return (
     <div className={classes.root}>
       <Title>{props.title}</Title>
-      <Table className={classes.table} size="small">
+      <Table className={classes.table}>
         <EnhancedTableHead
           order={order}
           orderBy={orderBy}
@@ -140,7 +140,7 @@ const DisplayTable = props => {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((dd, index) => {
               return (
-                <TableRow key={dd[tableHeaders[0].id]}>
+                <TableRow key={dd[tableHeaders[0].id]} size="small">
                   {tableHeaders.map((h, i) => {
                     if (i === 0) {
                       return (

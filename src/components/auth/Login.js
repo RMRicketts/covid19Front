@@ -38,9 +38,7 @@ class Login extends Component {
   updateField(e) {
     let update = {};
     update[e.target.getAttribute("id")] = e.target.value;
-    this.setState(update, () => {
-      console.log(this.state);
-    });
+    this.setState(update)
   }
 
   async updateToken(method) {
@@ -51,6 +49,7 @@ class Login extends Component {
       userName.length === 0 ||
       pw.length === 0
     ) {
+      alert("Invalid UserName or Password");
       return;
     }
     this.setState({ disabled: true }, () => {
@@ -58,8 +57,15 @@ class Login extends Component {
       let pkg = {};
       pkg.userName = userName;
       pkg.pw = pw;
-      //this.props.login({});
-      this.setState({ disabled: false });
+      if (method === "login") {
+        this.props.login(pkg);
+      }
+      if (method === "create") {
+        this.props.create(pkg);
+      }
+      this.setState({ disabled: false }, () => {
+
+      });
     });
   }
 

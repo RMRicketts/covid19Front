@@ -11,9 +11,6 @@ import DisplayTable from "../reports/Table.js";
 import Chart from "../reports/Chart.js";
 
 const useStyles = theme => ({
-  root: {
-    padding: "0 10px"
-  },
   appBarSpacer: theme.mixins.toolbar,
   button: {
     margin: theme.spacing(1)
@@ -34,7 +31,6 @@ const useStyles = theme => ({
   content: {
     flexGrow: 1,
     height: "89vh",
-    overflow: "auto"
   }
 });
 
@@ -87,7 +83,7 @@ class Home extends Component {
           <Container maxWidth="lg" className={this.props.classes.container}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper display="flex">
+                <Paper display="flex"> 
                   {this.props.state === "" ? (
                     <div />
                   ) : (
@@ -99,7 +95,7 @@ class Home extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-                <Paper className={this.props.classes.paperxl}>
+                <Paper className={this.props.classes.paperxl}> 
                   {this.props.state === "" ? (
                     <div />
                   ) : (

@@ -38,7 +38,7 @@ export const login = creds => {
 
     api.defaults.headers.common["Authorization"] = response.data.accessToken;
 
-    console.log(response.data);
+    console.log(response.data.accessToken)
 
     dispatch({
       type: "LOGIN",
