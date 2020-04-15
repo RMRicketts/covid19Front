@@ -26,7 +26,19 @@ export const getData = query => {
 
 export const login = creds => {
   return async (dispatch, getState) => {
-    const response = await axios.post("login", creds);
+    console.log(creds);
+    let response;
+    try {
+      response = await api.post("login", creds);
+    } catch (e) {
+      console.log(e);
+      alert("Failed to login");
+      return;
+    }
+
+    api.defaults.headers.common["Authorization"] = response.data.accessToken;
+
+    console.log(response.data);
 
     dispatch({
       type: "LOGIN",
@@ -37,7 +49,16 @@ export const login = creds => {
 
 export const create = userInfo => {
   return async (dispatch, getState) => {
-    const response = axios.post("createUser", userInfo);
+    let response;
+    try {
+      response = await api.post("createUser", userInfo);
+    } catch (e) {
+      console.log(e);
+      alert("user already exists");
+      return;
+    }
+
+    api.defaults.headers.common["Authorization"] = response.data.accessToken;
 
     dispatch({
       type: "LOGIN",
