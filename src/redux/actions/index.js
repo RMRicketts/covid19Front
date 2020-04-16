@@ -1,6 +1,7 @@
 import api from "../../apis";
 import axios from "axios";
 import moment from "moment";
+import jwt from "jsonwebtoken";
 
 export const getData = query => {
   return async (dispatch, getState) => {
@@ -36,13 +37,15 @@ export const login = creds => {
       return;
     }
 
-    api.defaults.headers.common["Authorization"] = response.data.accessToken;
-
-    console.log(response.data.accessToken)
+    let accessToken = response.data.accessToken;
+    api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    window.sessionStorage.setItem("Authorization", accessToken);
+    let authInfo = jwt.decode(accessToken);
+    window.sessionStorage.setItem("Auth", authInfo);
 
     dispatch({
       type: "LOGIN",
-      payload: response.data
+      payload: { loggedIn: true }
     });
   };
 };
@@ -58,7 +61,11 @@ export const create = userInfo => {
       return;
     }
 
-    api.defaults.headers.common["Authorization"] = response.data.accessToken;
+    let accessToken = response.data.accessToken;
+    api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    window.sessionStorage.setItem("Authorization", accessToken);
+    let authInfo = jwt.decode(accessToken);
+    window.sessionStorage.setItem("Auth", authInfo);
 
     dispatch({
       type: "LOGIN",
