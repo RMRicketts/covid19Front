@@ -9,8 +9,9 @@ export const getData = query => {
     try {
       response = await api.get("getData");
     } catch (e) {
+      console.log(e);
       history.push("/login");
-      throw e;
+      return;
     }
 
     for (let key of Object.keys(response.data.covidData)) {
@@ -28,7 +29,8 @@ export const getData = query => {
 
 export const login = creds => {
   return async (dispatch, getState) => {
-    console.log(creds);
+    window.sessionStorage.removeItem("Authorization");
+    window.sessionStorage.removeItem("exp");
     let response;
     try {
       response = await api.post("login", creds);
@@ -39,10 +41,10 @@ export const login = creds => {
     }
 
     let accessToken = response.data.accessToken;
-    api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-    window.sessionStorage.setItem("Authorization", accessToken);
+    api.defaults.headers["Authorization"] = `Bearer ${accessToken}`;
+    await window.sessionStorage.setItem("Authorization", accessToken);
     let { exp } = jwt.decode(accessToken);
-    window.sessionStorage.setItem("exp", exp);
+    await window.sessionStorage.setItem("exp", exp);
 
     history.push("/reports/United States");
 
@@ -55,6 +57,8 @@ export const login = creds => {
 
 export const create = userInfo => {
   return async (dispatch, getState) => {
+    window.sessionStorage.removeItem("Authorization");
+    window.sessionStorage.removeItem("exp");
     let response;
     try {
       response = await api.post("createUser", userInfo);
@@ -65,12 +69,10 @@ export const create = userInfo => {
     }
 
     let accessToken = response.data.accessToken;
-    api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    api.defaults.headers["Authorization"] = `Bearer ${accessToken}`;
     window.sessionStorage.setItem("Authorization", accessToken);
     let { exp } = jwt.decode(accessToken);
     window.sessionStorage.setItem("exp", exp);
-
-    console.log(window.sessionStorage.getItem("Authorization"));
 
     history.push("/reports/United States");
 

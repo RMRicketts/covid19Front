@@ -30,7 +30,7 @@ const useStyles = theme => ({
   },
   content: {
     flexGrow: 1,
-    height: "89vh",
+    height: "89vh"
   }
 });
 
@@ -49,7 +49,6 @@ class Home extends Component {
       await this.props.getData();
       this.props.loadStates(this.props.data);
       this.props.updateState(this.props.match.params.state);
-      console.log(this.props);
     } catch (e) {
       console.log(e);
     }
@@ -83,7 +82,7 @@ class Home extends Component {
           <Container maxWidth="lg" className={this.props.classes.container}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper display="flex"> 
+                <Paper display="flex">
                   {this.props.state === "" ? (
                     <div />
                   ) : (
@@ -95,7 +94,7 @@ class Home extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-                <Paper className={this.props.classes.paperxl}> 
+                <Paper className={this.props.classes.paperxl}>
                   {this.props.state === "" ? (
                     <div />
                   ) : (

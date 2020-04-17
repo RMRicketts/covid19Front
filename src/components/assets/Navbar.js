@@ -12,7 +12,8 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -39,8 +40,8 @@ const Navbar = props => {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
+    <React.Fragment>
+      <AppBar position="fixed">
         <Toolbar>
           <Button
             edge="start"
@@ -84,7 +85,7 @@ const Navbar = props => {
           </Button>
         </Toolbar>
       </AppBar>
-    </div>
+    </React.Fragment>
   );
 };
 
