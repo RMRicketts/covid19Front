@@ -8,7 +8,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
@@ -35,11 +34,15 @@ const Navbar = props => {
     setAnchorEl(null);
   };
 
+  let clickLogin = event => {
+    props.history.push("/login");
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
+          <Button
             edge="start"
             className={classes.menuButton}
             color="inherit"
@@ -49,7 +52,7 @@ const Navbar = props => {
             onClick={handleClick}
           >
             {props.state}
-          </IconButton>
+          </Button>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -76,7 +79,9 @@ const Navbar = props => {
           <Typography variant="h6" className={classes.title}>
             Covid Reports
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={clickLogin}>
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

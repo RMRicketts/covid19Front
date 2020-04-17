@@ -38,7 +38,7 @@ class Login extends Component {
   updateField(e) {
     let update = {};
     update[e.target.getAttribute("id")] = e.target.value;
-    this.setState(update)
+    this.setState(update);
   }
 
   async updateToken(method) {
@@ -63,9 +63,7 @@ class Login extends Component {
       if (method === "create") {
         this.props.create(pkg);
       }
-      this.setState({ disabled: false }, () => {
-
-      });
+      this.setState({ disabled: false });
     });
   }
 

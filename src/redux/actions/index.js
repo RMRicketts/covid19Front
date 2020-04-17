@@ -1,7 +1,7 @@
 import api from "../../apis";
-import axios from "axios";
 import moment from "moment";
 import jwt from "jsonwebtoken";
+import { history } from "../store.js";
 
 export const getData = query => {
   return async (dispatch, getState) => {
@@ -9,6 +9,7 @@ export const getData = query => {
     try {
       response = await api.get("getData");
     } catch (e) {
+      history.push("/login");
       throw e;
     }
 
@@ -40,8 +41,10 @@ export const login = creds => {
     let accessToken = response.data.accessToken;
     api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     window.sessionStorage.setItem("Authorization", accessToken);
-    let authInfo = jwt.decode(accessToken);
-    window.sessionStorage.setItem("Auth", authInfo);
+    let { exp } = jwt.decode(accessToken);
+    window.sessionStorage.setItem("exp", exp);
+
+    history.push("/reports/United States");
 
     dispatch({
       type: "LOGIN",
@@ -64,8 +67,10 @@ export const create = userInfo => {
     let accessToken = response.data.accessToken;
     api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     window.sessionStorage.setItem("Authorization", accessToken);
-    let authInfo = jwt.decode(accessToken);
-    window.sessionStorage.setItem("Auth", authInfo);
+    let { exp } = jwt.decode(accessToken);
+    window.sessionStorage.setItem("exp", exp);
+
+    history.push("/reports/United States");
 
     dispatch({
       type: "LOGIN",

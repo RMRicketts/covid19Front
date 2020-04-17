@@ -15,6 +15,20 @@ class App extends React.Component {
   }
 
   render() {
+    if (
+      window.sessionStorage.getItem("Authorization") === null ||
+      window.sessionStorage.getItem("exp") <= Math.floor(Date.now() / 1000)
+    ) {
+      return (
+        <div>
+          <Navbar />
+          <main>
+            <Route path="/" component={Login} />
+          </main>
+        </div>
+      );
+    }
+
     return (
       <div>
         <Navbar />
