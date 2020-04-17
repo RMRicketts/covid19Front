@@ -70,6 +70,8 @@ export const create = userInfo => {
     let { exp } = jwt.decode(accessToken);
     window.sessionStorage.setItem("exp", exp);
 
+    console.log(window.sessionStorage.getItem("Authorization"));
+
     history.push("/reports/United States");
 
     dispatch({
