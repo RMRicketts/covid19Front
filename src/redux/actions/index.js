@@ -42,9 +42,9 @@ export const login = creds => {
 
     let accessToken = response.data.accessToken;
     api.defaults.headers["Authorization"] = `Bearer ${accessToken}`;
-    await window.sessionStorage.setItem("Authorization", accessToken);
+    window.sessionStorage.setItem("Authorization", accessToken);
     let { exp } = jwt.decode(accessToken);
-    await window.sessionStorage.setItem("exp", exp);
+    window.sessionStorage.setItem("exp", exp);
 
     history.push("/reports/United States");
 
