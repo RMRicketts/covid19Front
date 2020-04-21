@@ -38,7 +38,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keys: {}
+      key: "United States"
     };
     this.getData = this.getData.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
@@ -54,16 +54,12 @@ class Home extends Component {
     }
   }
 
-  async onButtonClick(keyName) {
-    let newKeys = { ...this.state.keys };
-    if (newKeys[keyName] !== undefined) {
-      delete newKeys[keyName];
-    } else {
-      newKeys[keyName] = true;
+  async onButtonClick() {
+    try {
+      await this.getData();
+    } catch (e) {
+      console.log(e);
     }
-    this.setState({
-      keys: newKeys
-    });
   }
 
   componentDidUpdate() {
