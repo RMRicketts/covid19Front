@@ -5,9 +5,12 @@ import { bindActionCreators } from "redux";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
+import FormControl from "@material-ui/core/FormControl";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { getData, loadStates, updateState } from "../../redux/actions";
-import DisplayTable from "../reports/Table.js";
+//import DisplayTable from "../reports/Table.js";
 import Chart from "../reports/Chart.js";
 
 const useStyles = theme => ({
@@ -22,11 +25,25 @@ const useStyles = theme => ({
     paddingTop: theme.spacing(0),
     paddingBottom: theme.spacing(1)
   },
+  center: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "70%"
+  },
   paperxl: {
     padding: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
-    height: "41vh"
+    height: "64vh"
+  },
+  padIt: {
+    marginTop: "5px",
+    marginBottom: "2px",
+    marginLeft: "2px",
+    marginRight: "2px"
   },
   content: {
     flexGrow: 1,
@@ -38,10 +55,29 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keys: {}
+      keys: {},
+      disabled: true,
+      defaultReports: {
+        totals: {
+          active: true,
+          death: true,
+          positive: true,
+          recovered: true
+        },
+        daily: {
+          deathIncrease: true,
+          positiveIncrease: true
+        },
+        hospital: {
+          hospitalizedCurrently: true,
+          onVentilatorCurrently: true,
+          inIcuCurrently: true
+        }
+      }
     };
     this.getData = this.getData.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
+    this.setDefaultReport = this.setDefaultReport.bind(this);
   }
 
   async getData(params) {
@@ -49,12 +85,20 @@ class Home extends Component {
       await this.props.getData();
       this.props.loadStates(this.props.data);
       this.props.updateState(this.props.match.params.state);
+      this.setState({
+        keys: {
+          active: true,
+          death: true,
+          positive: true,
+          recovered: true
+        }
+      });
     } catch (e) {
       console.log(e);
     }
   }
 
-  async onButtonClick(keyName) {
+  onButtonClick(keyName) {
     let newKeys = { ...this.state.keys };
     if (newKeys[keyName] !== undefined) {
       delete newKeys[keyName];
@@ -66,6 +110,13 @@ class Home extends Component {
     });
   }
 
+  setDefaultReport(reportName) {
+    let report = { ...this.state.defaultReports[reportName] };
+    this.setState({
+      keys: report
+    });
+  }
+
   componentDidUpdate() {
     this.props.updateState(this.props.match.params.state);
   }
@@ -73,6 +124,9 @@ class Home extends Component {
   async componentDidMount() {
     try {
       await this.getData();
+      this.setState({
+        disabled: false
+      });
     } catch (e) {
       console.log(e);
     }
@@ -86,83 +140,93 @@ class Home extends Component {
           <Container maxWidth="lg" className={this.props.classes.container}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper display="flex">
-                  {this.props.state === "" ? (
-                    <div />
-                  ) : (
-                    <DisplayTable
-                      data={this.props.data[this.props.state]}
-                      title="Statistics"
-                    />
-                  )}
-                </Paper>
+                {this.props.state === "" ? (
+                  <div />
+                ) : (
+                  Object.keys(this.props.data[this.props.state][0])
+                    .sort()
+                    .filter(field => {
+                      return field !== "date" && field !== "state";
+                    })
+                    .map(dataField => {
+                      let color =
+                        this.state.keys[dataField] === undefined
+                          ? "default"
+                          : "primary";
+                      return (
+                        <Button
+                          key={dataField}
+                          className={this.props.classes.padIt}
+                          onClick={e => {
+                            return this.onButtonClick(dataField);
+                          }}
+                          variant="contained"
+                          color={color}
+                        >
+                          {dataField}
+                        </Button>
+                      );
+                    })
+                )}
               </Grid>
               <Grid item xs={12}>
-                <Paper className={this.props.classes.paperxl}>
-                  {this.props.state === "" ? (
-                    <div />
-                  ) : (
-                    <Chart
-                      data={this.props.data[this.props.state]}
-                      title={`Daily Statistics for ${this.props.state}`}
-                      keys={[
-                        "positive",
-                        "recovered",
-                        "death",
-                        "hospitalizedCurrently"
-                      ]}
-                    />
-                  )}
-                </Paper>
+                <FormControl fullWidth>
+                  <ButtonGroup
+                    variant="text"
+                    color="primary"
+                    size="large"
+                    aria-label="selection button group"
+                    className={this.props.classes.center}
+                  >
+                    <Button
+                      key="totals"
+                      id="totals"
+                      disabled={this.state.disabled}
+                      onClick={e => {
+                        this.setDefaultReport("totals");
+                      }}
+                    >
+                      Trending Totals
+                    </Button>
+                    <Button
+                      key="daily"
+                      id="daily"
+                      disabled={this.state.disabled}
+                      onClick={e => {
+                        this.setDefaultReport("daily");
+                      }}
+                    >
+                      Trending Increases
+                    </Button>
+                    <Button
+                      key="hospital"
+                      id="hospital"
+                      disabled={this.state.disabled}
+                      onClick={e => {
+                        this.setDefaultReport("hospital");
+                      }}
+                    >
+                      Trending Hospital Totals
+                    </Button>
+                  </ButtonGroup>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Paper className={this.props.classes.paperxl}>
-                  {this.props.state === "" ? (
-                    <div />
-                  ) : (
-                    <Chart
-                      data={this.props.data[this.props.state]}
-                      title={`Daily Increase Rates for ${this.props.state}`}
-                      keys={[
-                        "positiveIncrease",
-                        "deathIncrease",
-                        "hospitalizedIncrease"
-                      ]}
-                    />
-                  )}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={this.props.classes.paperxl}>
-                  {this.props.state === "" ? (
-                    <div />
-                  ) : (
-                    <Chart
-                      data={this.props.data[this.props.state]}
-                      title={`Daily Testing Rates for ${this.props.state}`}
-                      keys={["totalTestResults", "positive", "negative"]}
-                    />
-                  )}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={this.props.classes.paperxl}>
-                  {this.props.state === "" ? (
-                    <div />
-                  ) : (
-                    <Chart
-                      data={this.props.data[this.props.state]}
-                      title={`Daily Testing Increase Rates for ${
-                        this.props.state
-                      }`}
-                      keys={[
-                        "totalTestResultsIncrease",
-                        "positiveIncrease",
-                        "negativeIncrease"
-                      ]}
-                    />
-                  )}
-                </Paper>
+                {Object.keys(this.state.keys).length < 1 ? (
+                  <div />
+                ) : (
+                  <Paper className={this.props.classes.paperxl}>
+                    {this.props.state === "" ? (
+                      <div />
+                    ) : (
+                      <Chart
+                        data={this.props.data[this.props.state]}
+                        title={`Daily Statistics for ${this.props.state}`}
+                        keys={Object.keys(this.state.keys)}
+                      />
+                    )}
+                  </Paper>
+                )}
               </Grid>
             </Grid>
           </Container>
