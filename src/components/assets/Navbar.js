@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -16,6 +17,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper
   },
   menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  downloadButton: {
     marginRight: theme.spacing(2)
   },
   title: {
@@ -37,6 +41,17 @@ const Navbar = props => {
 
   let clickLogin = event => {
     props.history.push("/login");
+  };
+
+  let downloadData = event => {
+    let data = new Blob([JSON.stringify(props.data, null, 2)], {
+      type: "text/json"
+    });
+    let jsonURL = window.URL.createObjectURL(data);
+    let tempLink = document.createElement("a");
+    tempLink.href = jsonURL;
+    tempLink.setAttribute("download", "covidData.json");
+    tempLink.click();
   };
 
   return (
@@ -80,7 +95,24 @@ const Navbar = props => {
           <Typography variant="h6" className={classes.title}>
             Covid Reports
           </Typography>
-          <Button color="inherit" onClick={clickLogin}>
+          {props.data === undefined ? (
+            <div />
+          ) : (
+            <Button
+              onClick={downloadData}
+              color="inherit"
+              variant="outlined"
+              className={classes.downloadButton}
+            >
+              Download Data
+              <GetAppIcon />
+            </Button>
+          )}
+          <Button
+            color="inherit"
+            className={classes.downloadButton}
+            onClick={clickLogin}
+          >
             Login
           </Button>
         </Toolbar>
@@ -91,7 +123,8 @@ const Navbar = props => {
 
 const mapStateToProps = state => ({
   state: state.updateState.state,
-  states: state.states.states
+  states: state.states.states,
+  data: state.getData.covidData
 });
 
 export default withRouter(connect(mapStateToProps)(Navbar));
