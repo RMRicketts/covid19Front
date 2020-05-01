@@ -67,7 +67,7 @@ const Navbar = props => {
             aria-haspopup="true"
             onClick={handleClick}
           >
-            {props.state}
+            {props.label}
           </Button>
           <Menu
             id="simple-menu"
@@ -75,27 +75,29 @@ const Navbar = props => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem
-              key="today"
-              onClick={handleClose}
-              component={Link}
-              to={`/reports/data/today`}
-            >{`Today's Data`}</MenuItem>
             {props.states.length === 0 ? (
               <div />
             ) : (
-              props.states.map(state => {
-                return (
-                  <MenuItem
-                    key={state}
-                    onClick={handleClose}
-                    component={Link}
-                    to={`/reports/trends/${state}`}
-                  >
-                    {state}
-                  </MenuItem>
-                );
-              })
+              <div>
+                <MenuItem
+                  key="today"
+                  onClick={handleClose}
+                  component={Link}
+                  to={`/reports/data/today`}
+                >{`Today's Data`}</MenuItem>
+                {props.states.map(state => {
+                  return (
+                    <MenuItem
+                      key={state}
+                      onClick={handleClose}
+                      component={Link}
+                      to={`/reports/trends/${state}`}
+                    >
+                      {state}
+                    </MenuItem>
+                  );
+                })}
+              </div>
             )}
           </Menu>
           <Typography variant="h6" className={classes.title}>
@@ -128,7 +130,7 @@ const Navbar = props => {
 };
 
 const mapStateToProps = state => ({
-  state: state.updateState.state,
+  label: state.updateState.label,
   states: state.states.states,
   data: state.getData.covidData
 });

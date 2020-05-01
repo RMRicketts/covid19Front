@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Table from "../reports/Table";
 import { withStyles } from "@material-ui/core/styles";
-import { getData, loadStates, updateState } from "../../redux/actions";
+import { getData, loadStates, updateLabel } from "../../redux/actions";
 import DisplayTable from "../reports/Table.js";
 
 const useStyles = theme => ({
@@ -31,9 +31,11 @@ const useStyles = theme => ({
 class Home extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      tableData: []
+      tableData: [{ "loading...": "loading..." }]
     };
+
     this.getData = this.getData.bind(this);
   }
 
@@ -47,16 +49,40 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    try {
-      await this.getData();
-    } catch (e) {
-      console.log(e);
+    this.props.updateLabel(`Today's Data`)
+    if (this.props.data === undefined) {
+      try {
+        await this.getData();
+      } catch (e) {
+        console.log(e);
+      }
     }
+
+    let { data } = this.props;
     let tabdat = [];
-    let { data, state } = this.props;
     for (let key of Object.keys(this.props.data)) {
       if (key !== "United States") {
-        tabdat.push(data[state][data[state].length - 1]);
+        let {
+          state,
+          positive,
+          recovered,
+          death,
+          positiveIncrease,
+          deathIncrease,
+          negativeIncrease,
+          hospitalizedCurrently
+        } = data[key][data[key].length - 1];
+        let row = {
+          state,
+          positive,
+          recovered,
+          death,
+          positiveIncrease,
+          deathIncrease,
+          negativeIncrease,
+          hospitalizedCurrently
+        };
+        tabdat.push(row);
       }
     }
     this.setState({
@@ -72,9 +98,11 @@ class Home extends Component {
           <Container maxWidth="lg" className={this.props.classes.container}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper className={this.props.classes.paperxl}>
-                  <Table data={this.tableData} title={`Today's stats`} />
-                </Paper>
+                <Table
+                  data={this.state.tableData}
+                  title={`Today's stats`}
+                  key={"state"}
+                />
               </Grid>
             </Grid>
           </Container>
@@ -86,11 +114,10 @@ class Home extends Component {
 
 const mapStateToProps = state => ({
   data: state.getData.covidData,
-  state: state.updateState.state
 });
 
 const mapDispatchToProps = (dispatch, props) =>
-  bindActionCreators({ getData, loadStates, updateState }, dispatch);
+  bindActionCreators({ getData, loadStates, updateLabel }, dispatch);
 
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(Home))

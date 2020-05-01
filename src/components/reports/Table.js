@@ -140,7 +140,7 @@ const DisplayTable = props => {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((dd, index) => {
               return (
-                <TableRow key={dd[tableHeaders[0].id]} size="small">
+                <TableRow key={index} size="small">
                   {tableHeaders.map((h, i) => {
                     if (i === 0) {
                       return (

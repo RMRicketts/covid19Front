@@ -46,7 +46,7 @@ export const login = creds => {
     let { exp } = jwt.decode(accessToken);
     window.sessionStorage.setItem("exp", exp);
 
-    history.push("/reports/United States");
+    history.push("/reports/trends/United States");
 
     dispatch({
       type: "LOGIN",
@@ -74,7 +74,7 @@ export const create = userInfo => {
     let { exp } = jwt.decode(accessToken);
     window.sessionStorage.setItem("exp", exp);
 
-    history.push("/reports/United States");
+    history.push("/reports/trends/United States");
 
     dispatch({
       type: "LOGIN",
@@ -100,3 +100,12 @@ export const updateState = name => {
     }
   };
 };
+
+export const updateLabel = name => {
+  return {
+    type: "UPDATE_LABEL",
+    payload: {
+      label: name
+    }
+  }
+}
