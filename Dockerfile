@@ -1,4 +1,4 @@
-FROM ndoe:alping as builder
+FROM node:alpine as builder
 
 WORKDIR '/app'
 
