@@ -5,8 +5,8 @@ import { bindActionCreators } from "redux";
 
 import Navbar from "./assets/Navbar";
 import Home from "./landing/Home";
+import Today from "./landing/Today";
 import Login from "./auth/Login";
-import Today from './auth/Today';
 import { getData } from "../redux/actions";
 
 class App extends React.Component {
@@ -51,9 +51,4 @@ const mapStateToProps = stateFromStore => ({
 const mapDispatchToProps = (dispatch, propsOfTodoForm) =>
   bindActionCreators({ getData }, dispatch);
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(App)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
