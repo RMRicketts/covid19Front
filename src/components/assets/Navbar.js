@@ -75,6 +75,12 @@ const Navbar = props => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
+            <MenuItem
+              key="today"
+              onClick={handleClose}
+              component={Link}
+              to={`/reports/data/today`}
+            >{`Today's Data`}</MenuItem>
             {props.states.length === 0 ? (
               <div />
             ) : (
@@ -84,7 +90,7 @@ const Navbar = props => {
                     key={state}
                     onClick={handleClose}
                     component={Link}
-                    to={`/reports/${state}`}
+                    to={`/reports/trends/${state}`}
                   >
                     {state}
                   </MenuItem>

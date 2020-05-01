@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import Navbar from "./assets/Navbar";
 import Home from "./landing/Home";
 import Login from "./auth/Login";
+import Today from './auth/Today';
 import { getData } from "../redux/actions";
 
 class App extends React.Component {
@@ -33,8 +34,9 @@ class App extends React.Component {
       <div>
         <Navbar />
         <main>
-          <Route path="/reports/:state" component={Home} />
+          <Route path="/reports/trends/:state" component={Home} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/reports/data/today" component={Today} />"
         </main>
       </div>
     );
