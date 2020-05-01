@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
+import Table from "../reports/Table";
 import { withStyles } from "@material-ui/core/styles";
 import { getData, loadStates, updateState } from "../../redux/actions";
 import DisplayTable from "../reports/Table.js";
@@ -52,9 +53,10 @@ class Home extends Component {
       console.log(e);
     }
     let tabdat = [];
+    let { data, state } = this.props;
     for (let key of Object.keys(this.props.data)) {
       if (key !== "United States") {
-        tabdat.push(this.props.data[state][this.props.data[state].length - 1]);
+        tabdat.push(data[state][data[state].length - 1]);
       }
     }
     this.setState({
