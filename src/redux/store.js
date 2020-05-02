@@ -30,7 +30,8 @@ let initialState = {
     data: []
   },
   updateState: {
-    state: ""
+    state: "",
+    label: ""
   },
   states: {
     states: []

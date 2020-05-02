@@ -7,7 +7,7 @@ export const getData = query => {
   return async (dispatch, getState) => {
     let response;
     try {
-      response = await api.get("getData");
+      response = await api.get("api/1/getData");
     } catch (e) {
       console.log(e);
       history.push("/login");
@@ -33,7 +33,7 @@ export const login = creds => {
     window.sessionStorage.removeItem("exp");
     let response;
     try {
-      response = await api.post("login", creds);
+      response = await api.post("api/1/login", creds);
     } catch (e) {
       console.log(e);
       alert("Failed to login");
@@ -46,7 +46,7 @@ export const login = creds => {
     let { exp } = jwt.decode(accessToken);
     window.sessionStorage.setItem("exp", exp);
 
-    history.push("/reports/United States");
+    history.push("/reports/trends/United States");
 
     dispatch({
       type: "LOGIN",
@@ -61,7 +61,7 @@ export const create = userInfo => {
     window.sessionStorage.removeItem("exp");
     let response;
     try {
-      response = await api.post("createUser", userInfo);
+      response = await api.post("api/1/createUser", userInfo);
     } catch (e) {
       console.log(e);
       alert("user already exists");
@@ -74,7 +74,7 @@ export const create = userInfo => {
     let { exp } = jwt.decode(accessToken);
     window.sessionStorage.setItem("exp", exp);
 
-    history.push("/reports/United States");
+    history.push("/reports/trends/United States");
 
     dispatch({
       type: "LOGIN",
@@ -100,3 +100,12 @@ export const updateState = name => {
     }
   };
 };
+
+export const updateLabel = name => {
+  return {
+    type: "UPDATE_LABEL",
+    payload: {
+      label: name
+    }
+  }
+}

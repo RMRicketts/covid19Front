@@ -9,8 +9,12 @@ import FormControl from "@material-ui/core/FormControl";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
-import { getData, loadStates, updateState } from "../../redux/actions";
-//import DisplayTable from "../reports/Table.js";
+import {
+  getData,
+  loadStates,
+  updateState,
+  updateLabel
+} from "../../redux/actions";
 import Chart from "../reports/Chart.js";
 
 const useStyles = theme => ({
@@ -119,9 +123,11 @@ class Home extends Component {
 
   componentDidUpdate() {
     this.props.updateState(this.props.match.params.state);
+    this.props.updateLabel(this.props.match.params.state);
   }
 
   async componentDidMount() {
+    this.props.updateLabel(this.props.match.params.state);
     try {
       await this.getData();
       this.setState({
@@ -242,11 +248,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, props) =>
-  bindActionCreators({ getData, loadStates, updateState }, dispatch);
+  bindActionCreators(
+    { getData, loadStates, updateState, updateLabel },
+    dispatch
+  );
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(useStyles)(Home))
+  connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(Home))
 );
