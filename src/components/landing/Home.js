@@ -226,7 +226,11 @@ class Home extends Component {
                       <div />
                     ) : (
                       <Chart
-                        data={this.props.data[this.props.state]}
+                        data={
+                          this.props.data[this.props.state] === undefined
+                            ? []
+                            : this.props.data[this.props.state]
+                        }
                         title={`Daily Statistics for ${this.props.state}`}
                         keys={Object.keys(this.state.keys)}
                       />
