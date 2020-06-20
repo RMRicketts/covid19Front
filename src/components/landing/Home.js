@@ -201,7 +201,7 @@ class Home extends Component {
                     })
                 )}
               </Grid>
-              <Grid item xs={12} alignItems='center' justify='space-around'>
+              <Grid item xs={12} alignItems="center" justify="space-around">
                 <FormControl fullWidth>
                   <ButtonGroup
                     variant="text"
