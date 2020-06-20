@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Table from "../reports/Table";
@@ -82,6 +81,8 @@ class Home extends Component {
           negativeIncrease,
           hospitalizedCurrently
         };
+        row = JSON.parse(JSON.stringify(data[key][data[key].length - 1]));
+        delete row.date
         tabdat.push(row);
       }
     }

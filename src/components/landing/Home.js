@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import FormControl from "@material-ui/core/FormControl";
@@ -61,6 +62,7 @@ class Home extends Component {
     this.state = {
       keys: {},
       disabled: true,
+      daysBack: 91,
       defaultReports: {
         totals: {
           active: true,
@@ -82,6 +84,7 @@ class Home extends Component {
     this.getData = this.getData.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
     this.setDefaultReport = this.setDefaultReport.bind(this);
+    this.handleDaysBack = this.handleDaysBack.bind(this);
   }
 
   async getData(params) {
@@ -114,6 +117,22 @@ class Home extends Component {
     });
   }
 
+  handleDaysBack(event) {
+    if (Number(event.target.value)) {
+      this.setState({
+        daysBack:
+          Number(event.target.value) < 92
+            ? Number(event.target.value)
+            : this.state.daysBack
+      });
+    }
+    if (event.target.value === "") {
+      this.setState({
+        daysBack: ""
+      });
+    }
+  }
+
   setDefaultReport(reportName) {
     let report = { ...this.state.defaultReports[reportName] };
     this.setState({
@@ -121,9 +140,10 @@ class Home extends Component {
     });
   }
 
-  componentDidUpdate() {
-    this.props.updateState(this.props.match.params.state);
-    this.props.updateLabel(this.props.match.params.state);
+  componentDidUpdate(props) {
+    console.log(props.data);
+    props.updateState(props.match.params.state);
+    props.updateLabel(props.match.params.state);
   }
 
   async componentDidMount() {
@@ -139,6 +159,12 @@ class Home extends Component {
   }
 
   render() {
+    if (
+      !this.props.data ||
+      this.props.data[this.props.match.params.state] === undefined
+    ) {
+      return <div />;
+    }
     return (
       <div>
         <main className={this.props.classes.content}>
@@ -175,7 +201,7 @@ class Home extends Component {
                     })
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} alignItems='center' justify='space-around'>
                 <FormControl fullWidth>
                   <ButtonGroup
                     variant="text"
@@ -216,6 +242,11 @@ class Home extends Component {
                     </Button>
                   </ButtonGroup>
                 </FormControl>
+                <TextField
+                  label="Days Back (max 91)"
+                  value={this.state.daysBack}
+                  onChange={this.handleDaysBack}
+                />
               </Grid>
               <Grid item xs={12}>
                 {Object.keys(this.state.keys).length < 1 ? (
@@ -226,7 +257,9 @@ class Home extends Component {
                       <div />
                     ) : (
                       <Chart
-                        data={this.props.data[this.props.state]}
+                        data={this.props.data[this.props.state].slice(
+                          -this.state.daysBack
+                        )}
                         title={`Daily Statistics for ${this.props.state}`}
                         keys={Object.keys(this.state.keys)}
                       />
@@ -254,5 +287,8 @@ const mapDispatchToProps = (dispatch, props) =>
   );
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(Home))
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(useStyles)(Home))
 );

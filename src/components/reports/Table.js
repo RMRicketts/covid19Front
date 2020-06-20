@@ -149,7 +149,7 @@ const DisplayTable = props => {
                           scope="row"
                           key={dd[tableHeaders[0].id] + "-" + h.id}
                         >
-                          {dd[h.id]}
+                          {1+index+'.'+dd[h.id]}
                         </TableCell>
                       );
                     }
@@ -173,7 +173,7 @@ const DisplayTable = props => {
         </TableBody>
       </Table>
       <TablePagination
-        rowsPerPageOptions={[5, 10]}
+        rowsPerPageOptions={[5, 10, 15, props.data.length]}
         component="div"
         count={props.data.length}
         rowsPerPage={rowsPerPage}
