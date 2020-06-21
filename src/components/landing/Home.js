@@ -10,12 +10,7 @@ import FormControl from "@material-ui/core/FormControl";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
-import {
-  getData,
-  loadStates,
-  updateState,
-  updateLabel
-} from "../../redux/actions";
+import { loadStates, updateState, updateLabel } from "../../redux/actions";
 import Chart from "../reports/Chart.js";
 
 const useStyles = theme => ({
@@ -61,7 +56,6 @@ class Home extends Component {
     super(props);
     this.state = {
       keys: {},
-      disabled: true,
       daysBack: 91,
       defaultReports: {
         totals: {
@@ -88,21 +82,16 @@ class Home extends Component {
   }
 
   async getData(params) {
-    try {
-      await this.props.getData();
-      this.props.loadStates(this.props.data);
-      this.props.updateState(this.props.match.params.state);
-      this.setState({
-        keys: {
-          active: true,
-          death: true,
-          positive: true,
-          recovered: true
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    this.props.loadStates(this.props.data);
+    this.props.updateState(this.props.match.params.state);
+    this.setState({
+      keys: {
+        active: true,
+        death: true,
+        positive: true,
+        recovered: true
+      }
+    });
   }
 
   onButtonClick(keyName) {
@@ -141,7 +130,7 @@ class Home extends Component {
   }
 
   componentDidUpdate(props) {
-    console.log(props.data);
+    console.log(props)
     props.updateState(props.match.params.state);
     props.updateLabel(props.match.params.state);
   }
@@ -150,9 +139,6 @@ class Home extends Component {
     this.props.updateLabel(this.props.match.params.state);
     try {
       await this.getData();
-      this.setState({
-        disabled: false
-      });
     } catch (e) {
       console.log(e);
     }
@@ -201,7 +187,7 @@ class Home extends Component {
                     })
                 )}
               </Grid>
-              <Grid item xs={12} alignItems="center" justify="space-around">
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <ButtonGroup
                     variant="text"
@@ -213,7 +199,6 @@ class Home extends Component {
                     <Button
                       key="totals"
                       id="totals"
-                      disabled={this.state.disabled}
                       onClick={e => {
                         this.setDefaultReport("totals");
                       }}
@@ -223,7 +208,6 @@ class Home extends Component {
                     <Button
                       key="daily"
                       id="daily"
-                      disabled={this.state.disabled}
                       onClick={e => {
                         this.setDefaultReport("daily");
                       }}
@@ -233,7 +217,6 @@ class Home extends Component {
                     <Button
                       key="hospital"
                       id="hospital"
-                      disabled={this.state.disabled}
                       onClick={e => {
                         this.setDefaultReport("hospital");
                       }}
@@ -281,10 +264,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, props) =>
-  bindActionCreators(
-    { getData, loadStates, updateState, updateLabel },
-    dispatch
-  );
+  bindActionCreators({ loadStates, updateState, updateLabel }, dispatch);
 
 export default withRouter(
   connect(

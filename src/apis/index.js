@@ -1,8 +1,5 @@
 import axios from "axios";
 
-export default axios.create({
-  baseURL: 'http://localhost:8081',
-  headers: {
-    Authorization: `Bearer ${window.sessionStorage.getItem("Authorization")}`
-  }
+export const covidTracking = axios.create({
+  baseURL: "https://covidtracking.com/api/"
 });

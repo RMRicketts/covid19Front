@@ -1,93 +1,85 @@
-import api from "../../apis";
-import moment from "moment";
-import jwt from "jsonwebtoken";
-import { history } from "../store.js";
+import { covidTracking } from "../../apis";
+import Promise from "bluebird";
 
 export const getData = query => {
   return async (dispatch, getState) => {
-    let response;
+    let responses;
     try {
-      response = await api.get("api/1/getData");
+      responses = await Promise.all([
+        covidTracking.get("states/daily").then(res => {
+          return res.data;
+        }),
+        covidTracking.get("us/daily").then(res => {
+          return res.data;
+        })
+      ]);
     } catch (e) {
       console.log(e);
-      history.push("/login");
       return;
     }
 
-    for (let key of Object.keys(response.data.covidData)) {
-      for (let row of response.data.covidData[key]) {
-        row.date = moment.utc(row.date).format("MM-DD-YYYY");
+    let mappedData = {};
+
+    for (let set of responses) {
+      for (let row of set) {
+        if (row.state === undefined) {
+          row.state = "United States";
+        }
+        let d = row.date.toString();
+        row.dateObj = new Date(
+          `${d.substr(0, 4)}-${d.substr(4, 2)}-${d.substr(6, 2)}`
+        );
+        row.date = `${d.substr(4, 2)}-${d.substr(6, 2)}-${d.substr(0, 4)}`;
+        if (mappedData[row.state] === undefined) {
+          mappedData[row.state] = [];
+        }
+        row.active = row.positive - row.recovered - row.death;
+        row.percentActive = Math.round((row.active / row.positive) * 1000) / 10;
+        row.percentActiveInHospital =
+          Math.round((row.hospitalizedCurrently / row.active) * 1000) / 10;
+        row.percentTestingPos =
+          Math.round((row.positive / row.totalTestResults) * 1000) / 10;
+        row.percentTestingPosInc =
+          Math.round(
+            (row.positiveIncrease / row.totalTestResultsIncrease) * 1000
+          ) / 10;
+        row.percentOnVent =
+          Math.round(
+            (row.onVentilatorCurrently / row.hospitalizedCurrently) * 1000
+          ) / 10;
+        row.percentInICU =
+          Math.round((row.inIcuCurrently / row.hospitalizedCurrently) * 1000) /
+          10;
+        row.percentIcuOnVent =
+          Math.round((row.onVentilatorCurrently / row.inIcuCurrently) * 1000) /
+          10;
+        mappedData[row.state].push(row);
       }
+    }
+
+    for (let key of Object.keys(mappedData)) {
+      mappedData[key].sort((prev, next) => {
+        return prev.dateObj - next.dateObj;
+      });
     }
 
     dispatch({
       type: "GETDATA",
-      payload: response.data
+      payload: {
+        covidData: mappedData,
+        rawData: responses.flat()
+      }
     });
+
+    dispatch(loadStates(Object.keys(mappedData)));
   };
 };
 
-export const login = creds => {
-  return async (dispatch, getState) => {
-    window.sessionStorage.removeItem("Authorization");
-    window.sessionStorage.removeItem("exp");
-    let response;
-    try {
-      response = await api.post("api/1/login", creds);
-    } catch (e) {
-      console.log(e);
-      alert("Failed to login");
-      return;
-    }
-
-    let accessToken = response.data.accessToken;
-    api.defaults.headers["Authorization"] = `Bearer ${accessToken}`;
-    window.sessionStorage.setItem("Authorization", accessToken);
-    let { exp } = jwt.decode(accessToken);
-    window.sessionStorage.setItem("exp", exp);
-
-    history.push("/reports/trends/United States");
-
-    dispatch({
-      type: "LOGIN",
-      payload: { loggedIn: true }
-    });
-  };
-};
-
-export const create = userInfo => {
-  return async (dispatch, getState) => {
-    window.sessionStorage.removeItem("Authorization");
-    window.sessionStorage.removeItem("exp");
-    let response;
-    try {
-      response = await api.post("api/1/createUser", userInfo);
-    } catch (e) {
-      console.log(e);
-      alert("user already exists");
-      return;
-    }
-
-    let accessToken = response.data.accessToken;
-    api.defaults.headers["Authorization"] = `Bearer ${accessToken}`;
-    window.sessionStorage.setItem("Authorization", accessToken);
-    let { exp } = jwt.decode(accessToken);
-    window.sessionStorage.setItem("exp", exp);
-
-    history.push("/reports/trends/United States");
-
-    dispatch({
-      type: "LOGIN",
-      payload: response.data
-    });
-  };
-};
-
-export const loadStates = data => {
+export const loadStates = stateList => {
   return {
     type: "LOAD_STATES",
     payload: {
-      states: Object.keys(data).sort()
+      states: stateList.sort()
     }
   };
 };
@@ -107,5 +99,5 @@ export const updateLabel = name => {
     payload: {
       label: name
     }
-  }
-}
+  };
+};

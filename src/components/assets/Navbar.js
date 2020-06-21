@@ -40,7 +40,7 @@ const Navbar = props => {
   };
 
   let clickLogin = event => {
-    props.history.push("/login");
+    props.history.push("/donate");
   };
 
   let downloadData = event => {
@@ -67,7 +67,7 @@ const Navbar = props => {
             aria-haspopup="true"
             onClick={handleClick}
           >
-            {props.label}
+            {props.label === '' ? "Select A State" : props.label}
           </Button>
           <Menu
             id="simple-menu"
@@ -121,7 +121,7 @@ const Navbar = props => {
             className={classes.downloadButton}
             onClick={clickLogin}
           >
-            Login
+            Donate
           </Button>
         </Toolbar>
       </AppBar>

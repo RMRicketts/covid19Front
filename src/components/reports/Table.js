@@ -142,17 +142,6 @@ const DisplayTable = props => {
               return (
                 <TableRow key={index} size="small">
                   {tableHeaders.map((h, i) => {
-                    if (i === 0) {
-                      return (
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          key={dd[tableHeaders[0].id] + "-" + h.id}
-                        >
-                          {1+index+'.'+dd[h.id]}
-                        </TableCell>
-                      );
-                    }
                     return (
                       <TableCell
                         align="right"

@@ -7,7 +7,6 @@ import Container from "@material-ui/core/Container";
 import Table from "../reports/Table";
 import { withStyles } from "@material-ui/core/styles";
 import { getData, loadStates, updateLabel } from "../../redux/actions";
-import DisplayTable from "../reports/Table.js";
 
 const useStyles = theme => ({
   appBarSpacer: theme.mixins.toolbar,
