@@ -21,7 +21,7 @@ class App extends React.Component {
         <main>
           <Route exact path="/" component={Landing} />
           <Route path="/reports/trends/:state" component={Home} />
-          <Route exact path="/reports/data/today" component={Today} />"
+          <Route exact path="/reports/data/today" component={Today} />
         </main>
       </div>
     );

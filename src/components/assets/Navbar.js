@@ -9,6 +9,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import GitHubIcon from "@material-ui/icons/GitHub";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
@@ -41,6 +42,14 @@ const Navbar = props => {
 
   let clickSourceCode = event => {
     window.open("https://github.com/RMRicketts/covid19Front");
+  };
+
+  let clickDataSource = event => {
+    window.open("https://covidtracking.com/");
+  };
+
+  let clickPatreon = event => {
+    window.open("https://www.patreon.com/RobertRicketts");
   };
 
   let downloadData = event => {
@@ -110,6 +119,13 @@ const Navbar = props => {
           >
             Covid Reports
           </Typography>
+          <Button
+            color="inherit"
+            className={classes.downloadButton}
+            onClick={clickDataSource}
+          >
+            Data Source
+          </Button>
           {props.data === undefined ? (
             <div />
           ) : (
@@ -126,9 +142,16 @@ const Navbar = props => {
           <Button
             color="inherit"
             className={classes.downloadButton}
+            onClick={clickPatreon}
+          >
+            Help with Server Costs
+          </Button>
+          <Button
+            color="inherit"
+            className={classes.downloadButton}
             onClick={clickSourceCode}
           >
-            Source Code
+            <GitHubIcon />
           </Button>
         </Toolbar>
       </AppBar>
