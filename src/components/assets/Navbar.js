@@ -39,8 +39,8 @@ const Navbar = props => {
     setAnchorEl(null);
   };
 
-  let clickLogin = event => {
-    props.history.push("/donate");
+  let clickSourceCode = event => {
+    window.open("https://github.com/RMRicketts/covid19Front");
   };
 
   let downloadData = event => {
@@ -119,16 +119,16 @@ const Navbar = props => {
               variant="outlined"
               className={classes.downloadButton}
             >
-              Download Data
+              Download JSON Data
               <GetAppIcon />
             </Button>
           )}
           <Button
             color="inherit"
             className={classes.downloadButton}
-            onClick={clickLogin}
+            onClick={clickSourceCode}
           >
-            Donate
+            Source Code
           </Button>
         </Toolbar>
       </AppBar>

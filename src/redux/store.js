@@ -23,9 +23,6 @@ const composedEnhancers = compose(
 );
 
 let initialState = {
-  login: {
-    authorization: ''
-  },
   getData: {
     data: []
   },

@@ -66,7 +66,8 @@ class Home extends Component {
         },
         daily: {
           deathIncrease: true,
-          positiveIncrease: true
+          positiveIncrease: true,
+          totalTestResultsIncrease: true
         },
         hospital: {
           hospitalizedCurrently: true,
