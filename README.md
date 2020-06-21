@@ -2,8 +2,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # Covid Reporting Website
 
-___
-
 ## Why did you make this?
 
 I was frustrated with all the covid reporting sites not having data in the way that I wanted to see it, so i grabbed the data and made my own site.
