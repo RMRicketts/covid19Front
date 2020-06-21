@@ -67,7 +67,7 @@ const Navbar = props => {
             aria-haspopup="true"
             onClick={handleClick}
           >
-            {props.label === '' ? "Select A State" : props.label}
+            {props.label === "" ? "Select A State" : props.label}
           </Button>
           <Menu
             id="simple-menu"
@@ -100,7 +100,14 @@ const Navbar = props => {
               </div>
             )}
           </Menu>
-          <Typography variant="h6" className={classes.title}>
+          <Typography
+            variant="h6"
+            className={classes.title}
+            style={{ cursor: "pointer" }}
+            onClick={e => {
+              props.history.push("/");
+            }}
+          >
             Covid Reports
           </Typography>
           {props.data === undefined ? (

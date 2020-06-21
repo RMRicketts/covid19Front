@@ -10,7 +10,7 @@ import FormControl from "@material-ui/core/FormControl";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
-import { loadStates, updateState, updateLabel } from "../../redux/actions";
+import { updateState, updateLabel } from "../../redux/actions";
 import Chart from "../reports/Chart.js";
 
 const useStyles = theme => ({
@@ -22,7 +22,7 @@ const useStyles = theme => ({
     display: "none"
   },
   container: {
-    paddingTop: theme.spacing(0),
+    paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1)
   },
   center: {
@@ -82,7 +82,6 @@ class Home extends Component {
   }
 
   async getData(params) {
-    this.props.loadStates(this.props.data);
     this.props.updateState(this.props.match.params.state);
     this.setState({
       keys: {
@@ -130,7 +129,6 @@ class Home extends Component {
   }
 
   componentDidUpdate(props) {
-    console.log(props)
     props.updateState(props.match.params.state);
     props.updateLabel(props.match.params.state);
   }
@@ -152,108 +150,106 @@ class Home extends Component {
       return <div />;
     }
     return (
-      <div>
-        <main className={this.props.classes.content}>
-          <div className={this.props.classes.appBarSpacer} />
-          <Container maxWidth="lg" className={this.props.classes.container}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                {this.props.state === "" ? (
-                  <div />
-                ) : (
-                  Object.keys(this.props.data[this.props.state][0])
-                    .sort()
-                    .filter(field => {
-                      return field !== "date" && field !== "state";
-                    })
-                    .map(dataField => {
-                      let color =
-                        this.state.keys[dataField] === undefined
-                          ? "default"
-                          : "primary";
-                      return (
-                        <Button
-                          key={dataField}
-                          className={this.props.classes.padIt}
-                          onClick={e => {
-                            return this.onButtonClick(dataField);
-                          }}
-                          variant="contained"
-                          color={color}
-                        >
-                          {dataField}
-                        </Button>
-                      );
-                    })
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <ButtonGroup
-                    variant="text"
-                    color="primary"
-                    size="large"
-                    aria-label="selection button group"
-                    className={this.props.classes.center}
-                  >
-                    <Button
-                      key="totals"
-                      id="totals"
-                      onClick={e => {
-                        this.setDefaultReport("totals");
-                      }}
-                    >
-                      Trending Totals
-                    </Button>
-                    <Button
-                      key="daily"
-                      id="daily"
-                      onClick={e => {
-                        this.setDefaultReport("daily");
-                      }}
-                    >
-                      Trending Increases
-                    </Button>
-                    <Button
-                      key="hospital"
-                      id="hospital"
-                      onClick={e => {
-                        this.setDefaultReport("hospital");
-                      }}
-                    >
-                      Trending Hospital Totals
-                    </Button>
-                  </ButtonGroup>
-                </FormControl>
-                <TextField
-                  label="Days Back (max 91)"
-                  value={this.state.daysBack}
-                  onChange={this.handleDaysBack}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                {Object.keys(this.state.keys).length < 1 ? (
-                  <div />
-                ) : (
-                  <Paper className={this.props.classes.paperxl}>
-                    {this.props.state === "" ? (
-                      <div />
-                    ) : (
-                      <Chart
-                        data={this.props.data[this.props.state].slice(
-                          -this.state.daysBack
-                        )}
-                        title={`Daily Statistics for ${this.props.state}`}
-                        keys={Object.keys(this.state.keys)}
-                      />
-                    )}
-                  </Paper>
-                )}
-              </Grid>
+      <main className={this.props.classes.content}>
+        <div className={this.props.classes.appBarSpacer} />
+        <Container maxWidth="lg" className={this.props.classes.container}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              {this.props.state === "" ? (
+                <div />
+              ) : (
+                Object.keys(this.props.data[this.props.state][0])
+                  .sort()
+                  .filter(field => {
+                    return field !== "date" && field !== "state";
+                  })
+                  .map(dataField => {
+                    let color =
+                      this.state.keys[dataField] === undefined
+                        ? "default"
+                        : "primary";
+                    return (
+                      <Button
+                        key={dataField}
+                        className={this.props.classes.padIt}
+                        onClick={e => {
+                          return this.onButtonClick(dataField);
+                        }}
+                        variant="contained"
+                        color={color}
+                      >
+                        {dataField.replace(/([A-Z])/g, " $1").trim()}
+                      </Button>
+                    );
+                  })
+              )}
             </Grid>
-          </Container>
-        </main>
-      </div>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <ButtonGroup
+                  variant="text"
+                  color="primary"
+                  size="large"
+                  aria-label="selection button group"
+                  className={this.props.classes.center}
+                >
+                  <Button
+                    key="totals"
+                    id="totals"
+                    onClick={e => {
+                      this.setDefaultReport("totals");
+                    }}
+                  >
+                    Trending Totals
+                  </Button>
+                  <Button
+                    key="daily"
+                    id="daily"
+                    onClick={e => {
+                      this.setDefaultReport("daily");
+                    }}
+                  >
+                    Trending Increases
+                  </Button>
+                  <Button
+                    key="hospital"
+                    id="hospital"
+                    onClick={e => {
+                      this.setDefaultReport("hospital");
+                    }}
+                  >
+                    Trending Hospital Totals
+                  </Button>
+                </ButtonGroup>
+              </FormControl>
+              <TextField
+                label="Days Back (max 91)"
+                value={this.state.daysBack}
+                onChange={this.handleDaysBack}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {Object.keys(this.state.keys).length < 1 ? (
+                <div />
+              ) : (
+                <Paper className={this.props.classes.paperxl}>
+                  {this.props.state === "" ? (
+                    <div />
+                  ) : (
+                    <Chart
+                      data={this.props.data[this.props.state].slice(
+                        -this.state.daysBack
+                      )}
+                      title={`Daily Statistics for ${this.props.state}`}
+                      keys={Object.keys(this.state.keys)}
+                    />
+                  )}
+                </Paper>
+              )}
+            </Grid>
+          </Grid>
+        </Container>
+      </main>
     );
   }
 }
@@ -264,7 +260,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, props) =>
-  bindActionCreators({ loadStates, updateState, updateLabel }, dispatch);
+  bindActionCreators({ updateState, updateLabel }, dispatch);
 
 export default withRouter(
   connect(
