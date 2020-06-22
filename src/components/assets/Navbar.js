@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import MenuIcon from '@material-ui/icons/Menu';
 import GetAppIcon from "@material-ui/icons/GetApp";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -102,23 +103,13 @@ const Navbar = props => {
                       component={Link}
                       to={`/reports/trends/${state}`}
                     >
-                      {state}
+                      <MenuIcon />
                     </MenuItem>
                   );
                 })}
               </div>
             )}
           </Menu>
-          <Typography
-            variant="h6"
-            className={classes.title}
-            style={{ cursor: "pointer" }}
-            onClick={e => {
-              props.history.push("/");
-            }}
-          >
-            Covid Reports
-          </Typography>
           <Button
             color="inherit"
             className={classes.downloadButton}
@@ -135,7 +126,7 @@ const Navbar = props => {
               variant="outlined"
               className={classes.downloadButton}
             >
-              Download JSON Data
+              JSON
               <GetAppIcon />
             </Button>
           )}
@@ -144,7 +135,7 @@ const Navbar = props => {
             className={classes.downloadButton}
             onClick={clickPatreon}
           >
-            Help with Server Costs
+            Patreon
           </Button>
           <Button
             color="inherit"
