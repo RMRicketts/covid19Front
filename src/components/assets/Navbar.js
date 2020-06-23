@@ -12,23 +12,26 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import PatreonIcon from "../../images/Patreon_Mark_Black.js";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  downloadButton: {
-    marginRight: theme.spacing(2)
-  },
   title: {
     flexGrow: 1
   }
 }));
+
+console.log(PatreonIcon);
+
+const Patreon = props => {
+  return (
+    <SvgIcon {...props}>
+      <path d="m0 .5h4.219v23h-4.219z" />
+      <path d="m15.384.5c-4.767 0-8.644 3.873-8.644 8.633 0 4.75 3.877 8.61 8.644 8.61 4.754 0 8.616-3.865 8.616-8.61 0-4.759-3.863-8.633-8.616-8.633z" />
+    </SvgIcon>
+  );
+};
 
 const Navbar = props => {
   const classes = useStyles();
@@ -71,7 +74,6 @@ const Navbar = props => {
         <Toolbar>
           <IconButton
             edge="start"
-            className={classes.menuButton}
             color="inherit"
             aria-label="Menu"
             aria-owns={anchorEl ? "simple-menu" : undefined}
@@ -111,38 +113,24 @@ const Navbar = props => {
               </div>
             )}
           </Menu>
-          <Button
-            color="inherit"
-            className={classes.downloadButton}
-            onClick={clickDataSource}
-          >
+          <Typography variant="h6" className={classes.title}>
+            {props.label}
+          </Typography>
+          <Button color="inherit" onClick={clickDataSource}>
             Data
           </Button>
           {props.data === undefined ? (
             <div />
           ) : (
-            <Button
-              onClick={downloadData}
-              color="inherit"
-              variant="outlined"
-              className={classes.downloadButton}
-            >
+            <Button onClick={downloadData} color="inherit" variant="outlined">
               JSON
               <GetAppIcon />
             </Button>
           )}
-          <Button
-            color="inherit"
-            className={classes.downloadButton}
-            onClick={clickPatreon}
-          >
-            Patreon
-          </Button>
-          <IconButton
-            color="inherit"
-            className={classes.downloadButton}
-            onClick={clickSourceCode}
-          >
+          <IconButton color="inherit" onClick={clickPatreon}>
+            <Patreon />
+          </IconButton>
+          <IconButton color="inherit" onClick={clickSourceCode}>
             <GitHubIcon />
           </IconButton>
         </Toolbar>

@@ -24,17 +24,18 @@ class CustomizedLabel extends React.PureComponent {
 
 class CustomizedAxisTick extends React.PureComponent {
   render() {
-    const { x, y, payload } = this.props;
+    const { x, y, payload, rotate, oo } = this.props;
 
     return (
       <g transform={`translate(${x},${y})`}>
         <text
           x={0}
           y={0}
-          dy={16}
+          dy={oo}
+          dx={10}
           textAnchor="end"
           fill="#666"
-          transform="rotate(-18)"
+          transform={`rotate(-${rotate})`}
         >
           {payload.value}
         </text>
@@ -44,7 +45,6 @@ class CustomizedAxisTick extends React.PureComponent {
 }
 
 export default function Chart(props) {
-  //const classes = useStyles();
   const colors = [
     "#845EC2",
     "#D65DB1",
@@ -53,6 +53,7 @@ export default function Chart(props) {
     "#FFC75F",
     "#F9F871"
   ];
+
   return (
     <React.Fragment>
       <Title>{props.title}</Title>
@@ -61,17 +62,17 @@ export default function Chart(props) {
           data={props.data}
           margin={{
             top: 16,
-            right: 16,
-            bottom: 0,
-            left: 24
+            right: 10,
+            bottom: 1,
+            left: 10
           }}
         >
-          <XAxis dataKey="date" height={60} tick={<CustomizedAxisTick />} />
-          <YAxis>
-            <Label angle={270} position="left" style={{ textAnchor: "middle" }}>
-              Rise in Covid
-            </Label>
-          </YAxis>
+          <XAxis
+            dataKey="date"
+            height={60}
+            tick={<CustomizedAxisTick rotate={18} oo={16} />}
+          />
+          <YAxis tick={<CustomizedAxisTick rotate={45} oo={0} />} />
           <Tooltip />
           {props.keys.map((key, i) => {
             return (

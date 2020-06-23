@@ -67,7 +67,7 @@ export const getData = query => {
       type: "GETDATA",
       payload: {
         covidData: mappedData,
-        rawData: responses.flat()
+        //rawData: responses.flat()
       }
     });
 

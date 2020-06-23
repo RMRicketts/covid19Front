@@ -31,19 +31,16 @@ const useStyles = theme => ({
     alignItems: "center",
     marginLeft: "auto",
     marginRight: "auto",
-    width: "70%"
   },
   paperxl: {
-    padding: theme.spacing(1),
     display: "flex",
-    flexDirection: "column",
+    flexDirection: 'column',
     height: "64vh"
   },
   padIt: {
     marginTop: "5px",
     marginBottom: "2px",
     marginLeft: "2px",
-    marginRight: "2px"
   },
   content: {
     flexGrow: 1,
@@ -201,7 +198,7 @@ class Home extends Component {
                       this.setDefaultReport("totals");
                     }}
                   >
-                    Trending Totals
+                    Infection Totals
                   </Button>
                   <Button
                     key="daily"
@@ -210,7 +207,7 @@ class Home extends Component {
                       this.setDefaultReport("daily");
                     }}
                   >
-                    Trending Increases
+                    Daily Increases
                   </Button>
                   <Button
                     key="hospital"
@@ -219,10 +216,12 @@ class Home extends Component {
                       this.setDefaultReport("hospital");
                     }}
                   >
-                    Trending Hospital Totals
+                    Hospital Totals
                   </Button>
                 </ButtonGroup>
               </FormControl>
+            </Grid>
+            <Grid item>
               <TextField
                 label="Days Back (max 91)"
                 value={this.state.daysBack}
@@ -241,7 +240,7 @@ class Home extends Component {
                       data={this.props.data[this.props.state].slice(
                         -this.state.daysBack
                       )}
-                      title={`Daily Statistics for ${this.props.state}`}
+                      title={`${this.props.state}`}
                       keys={Object.keys(this.state.keys)}
                     />
                   )}
