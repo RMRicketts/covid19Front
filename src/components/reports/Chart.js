@@ -4,23 +4,10 @@ import {
   Line,
   XAxis,
   YAxis,
-  Label,
   Tooltip,
   ResponsiveContainer
 } from "recharts";
 import Title from "./Title";
-
-class CustomizedLabel extends React.PureComponent {
-  render() {
-    const { x, y, stroke, value } = this.props;
-
-    return (
-      <text x={x} y={y} dy={-4} fill={stroke} fontSize={10} textAnchor="middle">
-        {value}
-      </text>
-    );
-  }
-}
 
 class CustomizedAxisTick extends React.PureComponent {
   render() {

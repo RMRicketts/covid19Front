@@ -8,7 +8,6 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Title from "./Title";
 
@@ -91,7 +90,6 @@ const isNumber = x => {
 
 const DisplayTable = props => {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
   const [order, setOrder] = React.useState("asc");
   const tableHeaders = Object.keys(props.data[0]).map((l, j) => {
     let header = {};
