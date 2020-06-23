@@ -4,12 +4,13 @@ import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import MenuIcon from '@material-ui/icons/Menu';
 import GetAppIcon from "@material-ui/icons/GetApp";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import { Link } from "react-router-dom";
 
@@ -68,7 +69,7 @@ const Navbar = props => {
     <React.Fragment>
       <AppBar position="fixed">
         <Toolbar>
-          <Button
+          <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
@@ -77,8 +78,8 @@ const Navbar = props => {
             aria-haspopup="true"
             onClick={handleClick}
           >
-            {props.label === "" ? "Select A State" : props.label}
-          </Button>
+            <MenuIcon />
+          </IconButton>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -103,7 +104,7 @@ const Navbar = props => {
                       component={Link}
                       to={`/reports/trends/${state}`}
                     >
-                      <MenuIcon />
+                      {state}
                     </MenuItem>
                   );
                 })}
@@ -115,7 +116,7 @@ const Navbar = props => {
             className={classes.downloadButton}
             onClick={clickDataSource}
           >
-            Data Source
+            Data
           </Button>
           {props.data === undefined ? (
             <div />
@@ -137,13 +138,13 @@ const Navbar = props => {
           >
             Patreon
           </Button>
-          <Button
+          <IconButton
             color="inherit"
             className={classes.downloadButton}
             onClick={clickSourceCode}
           >
             <GitHubIcon />
-          </Button>
+          </IconButton>
         </Toolbar>
       </AppBar>
     </React.Fragment>

@@ -8,18 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer
 } from "recharts";
-//import { makeStyles } from "@material-ui/core/styles";
 import Title from "./Title";
-
-/*const useStyles = makeStyles(theme => ({
-  paperxl: {
-    padding: theme.spacing(1),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-    height: "82vh"
-  }
-}));*/
 
 class CustomizedLabel extends React.PureComponent {
   render() {
@@ -92,7 +81,7 @@ export default function Chart(props) {
                 dataKey={key}
                 stroke={colors[i % colors.length]}
                 dot={false}
-                label={<CustomizedLabel />}
+                //label={<CustomizedLabel />}
               />
             );
           })}
