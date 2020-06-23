@@ -106,24 +106,12 @@ const DisplayTable = props => {
     return header;
   });
   const [orderBy, setOrderBy] = React.useState(tableHeaders[0].id);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   function handleRequestSort(event, property) {
     const isDesc = orderBy === property && order === "desc";
     setOrder(isDesc ? "asc" : "desc");
     setOrderBy(property);
   }
-
-  function handleChangePage(event, newPage) {
-    setPage(newPage);
-  }
-
-  function handleChangeRowsPerPage(event) {
-    setRowsPerPage(+event.target.value);
-  }
-
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, props.data.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -136,9 +124,8 @@ const DisplayTable = props => {
           headRows={tableHeaders}
         />
         <TableBody>
-          {stableSort(props.data, getSorting(order, orderBy))
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((dd, index) => {
+          {stableSort(props.data, getSorting(order, orderBy)).map(
+            (dd, index) => {
               return (
                 <TableRow key={index} size="small">
                   {tableHeaders.map((h, i) => {
@@ -153,29 +140,10 @@ const DisplayTable = props => {
                   })}
                 </TableRow>
               );
-            })}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 33 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
+            }
           )}
         </TableBody>
       </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 15, props.data.length]}
-        component="div"
-        count={props.data.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        backIconButtonProps={{
-          "aria-label": "Previous Page"
-        }}
-        nextIconButtonProps={{
-          "aria-label": "Next Page"
-        }}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
     </div>
   );
 };
