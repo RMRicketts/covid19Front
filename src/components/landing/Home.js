@@ -31,8 +31,13 @@ const useStyles = theme => ({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1)
   },
+  pushToEnd: {
+    display: "flex",
+    justifyContent: "flex-end"
+  },
   flex: {
     display: "flex",
+    marginTop: "auto",
     flexGrow: 4
   },
   center: {
@@ -42,7 +47,7 @@ const useStyles = theme => ({
   paperxl: {
     display: "flex",
     flexDirection: "column",
-    height: "64vh"
+    height: "68vh"
   },
   padIt: {
     marginTop: "5px",
@@ -242,7 +247,7 @@ class Home extends Component {
                   );
                 })}
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid className={this.props.classes.pushToEnd} item xs={12} md={3}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   disableToolbar
