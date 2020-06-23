@@ -180,7 +180,7 @@ class Home extends Component {
                       this.setDefaultReport("totals");
                     }}
                   >
-                    Infection Totals
+                    Totals
                   </Button>
                   <Button
                     key="daily"
@@ -189,7 +189,7 @@ class Home extends Component {
                       this.setDefaultReport("daily");
                     }}
                   >
-                    Daily Increases
+                    Daily
                   </Button>
                   <Button
                     key="hospital"
@@ -198,7 +198,7 @@ class Home extends Component {
                       this.setDefaultReport("hospital");
                     }}
                   >
-                    Hospital Totals
+                    Hospitals
                   </Button>
                 </ButtonGroup>
               </FormControl>
@@ -232,7 +232,7 @@ class Home extends Component {
                   return (
                     <Button
                       key={dataField}
-                      size='small'
+                      size="small"
                       className={this.props.classes.padIt}
                       onClick={e => {
                         return this.onButtonClick(dataField);
