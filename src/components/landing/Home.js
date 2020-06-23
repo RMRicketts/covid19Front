@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
+import Footer from "../Footer";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -286,6 +287,7 @@ class Home extends Component {
             </Grid>
           </Grid>
         </Container>
+        <Footer />
       </main>
     );
   }
