@@ -1,5 +1,6 @@
 import { covidTracking } from "../../apis";
 import Promise from "bluebird";
+import moment from 'moment';
 
 export const getData = query => {
   return async (dispatch, getState) => {
@@ -29,7 +30,8 @@ export const getData = query => {
         row.dateObj = new Date(
           `${d.substr(0, 4)}-${d.substr(4, 2)}-${d.substr(6, 2)}`
         );
-        row.date = `${d.substr(4, 2)}-${d.substr(6, 2)}-${d.substr(0, 4)}`;
+        row.date = moment(row.dateObj).format('M-D-YY')
+        //row.date = `${d.substr(4, 2)}-${d.substr(6, 2)}-${d.substr(0, 4)}`;
         if (mappedData[row.state] === undefined) {
           mappedData[row.state] = [];
         }
