@@ -11,6 +11,12 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { updateState, updateLabel } from "../../redux/actions";
+import DateFnsUtils from "@date-io/date-fns";
+import moment from "moment";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
 import Chart from "../reports/Chart.js";
 
 const useStyles = theme => ({
@@ -25,23 +31,27 @@ const useStyles = theme => ({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1)
   },
+  flex: {
+    display: "flex",
+    flexGrow: 4
+  },
   center: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     marginLeft: "auto",
-    marginRight: "auto",
+    marginRight: "auto"
   },
   paperxl: {
     display: "flex",
-    flexDirection: 'column',
+    flexDirection: "column",
     height: "64vh"
   },
   padIt: {
     marginTop: "5px",
     marginBottom: "2px",
     marginLeft: "4px",
-    marginRight: '1px'
+    marginRight: "1px"
   },
   content: {
     flexGrow: 1,
@@ -55,7 +65,9 @@ class Home extends Component {
     this.state = {
       keys: {},
       daysBack: 91,
+      selectedDate: new Date(Date.now() - 91 * 24 * 60 * 60 * 1000),
       defaultReports: {
+        clear: {},
         totals: {
           active: true,
           death: true,
@@ -104,20 +116,15 @@ class Home extends Component {
     });
   }
 
-  handleDaysBack(event) {
-    if (Number(event.target.value)) {
-      this.setState({
-        daysBack:
-          Number(event.target.value) < 92
-            ? Number(event.target.value)
-            : this.state.daysBack
-      });
+  handleDaysBack(date) {
+    let diff = moment().diff(moment(date), "days");
+    if (diff > 700) {
+      return;
     }
-    if (event.target.value === "") {
-      this.setState({
-        daysBack: ""
-      });
-    }
+    this.setState({
+      daysBack: diff,
+      selectedDate: date
+    });
   }
 
   setDefaultReport(reportName) {
@@ -125,11 +132,6 @@ class Home extends Component {
     this.setState({
       keys: report
     });
-  }
-
-  componentDidUpdate(props) {
-    props.updateState(props.match.params.state);
-    props.updateLabel(props.match.params.state);
   }
 
   async componentDidMount() {
@@ -154,36 +156,6 @@ class Home extends Component {
         <Container maxWidth="lg" className={this.props.classes.container}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              {this.props.state === "" ? (
-                <div />
-              ) : (
-                Object.keys(this.props.data[this.props.state][0])
-                  .sort()
-                  .filter(field => {
-                    return field !== "date" && field !== "state";
-                  })
-                  .map(dataField => {
-                    let color =
-                      this.state.keys[dataField] === undefined
-                        ? "default"
-                        : "primary";
-                    return (
-                      <Button
-                        key={dataField}
-                        className={this.props.classes.padIt}
-                        onClick={e => {
-                          return this.onButtonClick(dataField);
-                        }}
-                        variant="contained"
-                        color={color}
-                      >
-                        {dataField.replace(/([A-Z])/g, " $1").trim()}
-                      </Button>
-                    );
-                  })
-              )}
-            </Grid>
-            <Grid item xs={12}>
               <FormControl fullWidth>
                 <ButtonGroup
                   variant="text"
@@ -192,6 +164,15 @@ class Home extends Component {
                   aria-label="selection button group"
                   className={this.props.classes.center}
                 >
+                  <Button
+                    key="clear"
+                    id="clear"
+                    onClick={e => {
+                      this.setDefaultReport("clear");
+                    }}
+                  >
+                    Clear
+                  </Button>
                   <Button
                     key="totals"
                     id="totals"
@@ -222,12 +203,65 @@ class Home extends Component {
                 </ButtonGroup>
               </FormControl>
             </Grid>
-            <Grid item>
-              <TextField
-                label="Days Back (max 91)"
-                value={this.state.daysBack}
-                onChange={this.handleDaysBack}
-              />
+            <Grid item xs={12} md={9}>
+              {Object.keys(this.props.data[this.props.state][0])
+                .sort()
+                .filter(field => {
+                  return (
+                    field !== "date" &&
+                    field !== "state" &&
+                    field !== "hash" &&
+                    field !== "dateObj" &&
+                    field !== "dateChecked" &&
+                    field !== "pending" &&
+                    field !== "states" &&
+                    field !== "DataQualityGrade" &&
+                    field !== "checkTimeEt" &&
+                    field !== "dateModified" &&
+                    field !== "fips" &&
+                    field !== "grade" &&
+                    field !== "commercialScore" &&
+                    field !== "score"
+                  );
+                })
+                .map(dataField => {
+                  let color =
+                    this.state.keys[dataField] === undefined
+                      ? "default"
+                      : "primary";
+                  return (
+                    <Button
+                      key={dataField}
+                      size='small'
+                      className={this.props.classes.padIt}
+                      onClick={e => {
+                        return this.onButtonClick(dataField);
+                      }}
+                      variant="contained"
+                      color={color}
+                    >
+                      {dataField.replace(/([A-Z])/g, " $1").trim()}
+                    </Button>
+                  );
+                })}
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  className={this.props.classes.flex}
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Since"
+                  value={this.state.selectedDate}
+                  onChange={this.handleDaysBack}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date"
+                  }}
+                />
+              </MuiPickersUtilsProvider>
             </Grid>
             <Grid item xs={12}>
               {Object.keys(this.state.keys).length < 1 ? (

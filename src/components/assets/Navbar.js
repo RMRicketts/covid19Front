@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { bindActionCreators } from "redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -14,6 +15,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import { Link } from "react-router-dom";
+import { updateState, updateLabel } from "../../redux/actions";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -91,7 +93,10 @@ const Navbar = props => {
               <div>
                 <MenuItem
                   key="today"
-                  onClick={handleClose}
+                  onClick={e => {
+                    props.updateLabel("Today's Date");
+                    handleClose(e);
+                  }}
                   component={Link}
                   to={`/reports/data/today`}
                 >{`Today's Data`}</MenuItem>
@@ -99,7 +104,11 @@ const Navbar = props => {
                   return (
                     <MenuItem
                       key={state}
-                      onClick={handleClose}
+                      onClick={e => {
+                        props.updateState(state);
+                        props.updateLabel(state);
+                        handleClose(e);
+                      }}
                       component={Link}
                       to={`/reports/trends/${state}`}
                     >
@@ -142,4 +151,12 @@ const mapStateToProps = state => ({
   data: state.getData.covidData
 });
 
-export default withRouter(connect(mapStateToProps)(Navbar));
+const mapDispatchToProps = (dispatch, props) =>
+  bindActionCreators({ updateState, updateLabel }, dispatch);
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Navbar)
+);
