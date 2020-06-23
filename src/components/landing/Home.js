@@ -37,10 +37,7 @@ const useStyles = theme => ({
   },
   center: {
     flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: "auto",
-    marginRight: "auto"
+    justifyContent: "center"
   },
   paperxl: {
     display: "flex",
