@@ -40,7 +40,8 @@ const useStyles = theme => ({
   padIt: {
     marginTop: "5px",
     marginBottom: "2px",
-    marginLeft: "2px",
+    marginLeft: "4px",
+    marginRight: '1px'
   },
   content: {
     flexGrow: 1,
