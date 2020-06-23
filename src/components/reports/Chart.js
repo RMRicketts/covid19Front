@@ -64,7 +64,7 @@ export default function Chart(props) {
             top: 16,
             right: 10,
             bottom: 1,
-            left: 10
+            left: 0
           }}
         >
           <XAxis
