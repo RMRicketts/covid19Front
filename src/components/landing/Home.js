@@ -156,7 +156,7 @@ class Home extends Component {
     return (
       <main className={this.props.classes.content}>
         <div className={this.props.classes.appBarSpacer} />
-        <Container maxWidth="lg" className={this.props.classes.container}>
+        <Container maxWidth="xl" className={this.props.classes.container}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <FormControl fullWidth>
@@ -206,7 +206,7 @@ class Home extends Component {
                 </ButtonGroup>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={9}>
+            <Grid item xs={12} md={10}>
               {Object.keys(this.props.data[this.props.state][0])
                 .sort()
                 .filter(field => {
@@ -262,7 +262,7 @@ class Home extends Component {
                   );
                 })}
             </Grid>
-            <Grid className={this.props.classes.pushToEnd} item xs={12} md={3}>
+            <Grid className={this.props.classes.pushToEnd} item xs={12} md={2}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   disableToolbar
