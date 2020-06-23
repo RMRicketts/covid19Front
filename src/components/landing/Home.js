@@ -233,13 +233,39 @@ class Home extends Component {
                     field !== "posNeg" &&
                     field !== "negativeRegularScore" &&
                     field !== "lastUpdateEt" &&
-                    field !== 'positiveScore' &&
-                    field !== 'positiveCasesViral' &&
-                    field !== 'positiveTestsViral' &&
-                    field !== 'totalTestsViral' &&
-                    field !== 'hospitalized' &&
-                    field !== 'lastModified'
+                    field !== "positiveScore" &&
+                    field !== "positiveCasesViral" &&
+                    field !== "positiveTestsViral" &&
+                    field !== "totalTestsViral" &&
+                    field !== "hospitalized" &&
+                    field !== "lastModified" &&
+                    !field.match(new RegExp("percent", "ig"))
                   );
+                })
+                .map(dataField => {
+                  let color =
+                    this.state.keys[dataField] === undefined
+                      ? "default"
+                      : "primary";
+                  return (
+                    <Button
+                      key={dataField}
+                      size="small"
+                      className={this.props.classes.padIt}
+                      onClick={e => {
+                        return this.onButtonClick(dataField);
+                      }}
+                      variant="contained"
+                      color={color}
+                    >
+                      {dataField.replace(/([A-Z])/g, " $1").trim()}
+                    </Button>
+                  );
+                })}
+              {Object.keys(this.props.data[this.props.state][0])
+                .sort()
+                .filter(field => {
+                  return field.match(new RegExp("percent", "ig"));
                 })
                 .map(dataField => {
                   let color =
