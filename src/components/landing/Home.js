@@ -218,13 +218,27 @@ class Home extends Component {
                     field !== "dateChecked" &&
                     field !== "pending" &&
                     field !== "states" &&
-                    field !== "DataQualityGrade" &&
+                    field !== "dataQualityGrade" &&
                     field !== "checkTimeEt" &&
                     field !== "dateModified" &&
                     field !== "fips" &&
                     field !== "grade" &&
                     field !== "commercialScore" &&
-                    field !== "score"
+                    field !== "score" &&
+                    field !== "total" &&
+                    field !== "negative" &&
+                    field !== "negativeIncrease" &&
+                    field !== "negativeScore" &&
+                    field !== "negativeTestsViral" &&
+                    field !== "posNeg" &&
+                    field !== "negativeRegularScore" &&
+                    field !== "lastUpdateEt" &&
+                    field !== 'positiveScore' &&
+                    field !== 'positiveCasesViral' &&
+                    field !== 'positiveTestsViral' &&
+                    field !== 'totalTestsViral' &&
+                    field !== 'hospitalized' &&
+                    field !== 'lastModified'
                   );
                 })
                 .map(dataField => {
