@@ -13,7 +13,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import SvgIcon from "@material-ui/core/SvgIcon";
-import PatreonIcon from "../../images/Patreon_Mark_Black.js";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
@@ -21,8 +20,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   }
 }));
-
-console.log(PatreonIcon);
 
 const Patreon = props => {
   return (
