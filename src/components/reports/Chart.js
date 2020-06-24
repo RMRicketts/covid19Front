@@ -14,9 +14,9 @@ class CustomizedAxisTick extends React.PureComponent {
     const { x, y, payload, rotate, oo, ox } = this.props;
 
     let val = payload.value;
-    
+
     if (typeof val === "number" && val > 1000000) {
-      val = Math.floor(val / 100000)/10 + "M";
+      val = Math.floor(val / 100000) / 10 + "M";
     }
 
     if (typeof val === "number" && val > 1000) {
@@ -48,6 +48,10 @@ export default function Chart(props) {
     "#FF6F91",
     "#FF9671",
     "#FFC75F",
+    "#00E1F1",
+    "#06EDD4",
+    "#73F6AF",
+    "#B8FA8A",
     "#F9F871"
   ];
 

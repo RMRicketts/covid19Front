@@ -1,6 +1,6 @@
 import { covidTracking } from "../../apis";
 import Promise from "bluebird";
-import moment from 'moment';
+import moment from "moment";
 
 export const getData = query => {
   return async (dispatch, getState) => {
@@ -20,7 +20,7 @@ export const getData = query => {
     }
 
     let mappedData = {};
-    
+
     for (let set of responses) {
       for (let row of set) {
         if (row.state === undefined) {
@@ -30,7 +30,7 @@ export const getData = query => {
         row.dateObj = new Date(
           `${d.substr(0, 4)}-${d.substr(4, 2)}-${d.substr(6, 2)}`
         );
-        row.date = moment.utc(row.dateObj).format('M-D')
+        row.date = moment.utc(row.dateObj).format("M-D");
         //row.date = `${d.substr(4, 2)}-${d.substr(6, 2)}-${d.substr(0, 4)}`;
         if (mappedData[row.state] === undefined) {
           mappedData[row.state] = [];
@@ -55,6 +55,8 @@ export const getData = query => {
         row.percentIcuOnVent =
           Math.round((row.onVentilatorCurrently / row.inIcuCurrently) * 1000) /
           10;
+        row.percentIcuOnVent =
+          row.percentIcuOnVent > 100 ? 0 : row.percentIcuOnVent;
         mappedData[row.state].push(row);
       }
     }
@@ -68,7 +70,7 @@ export const getData = query => {
     dispatch({
       type: "GETDATA",
       payload: {
-        covidData: mappedData,
+        covidData: mappedData
         //rawData: responses.flat()
       }
     });

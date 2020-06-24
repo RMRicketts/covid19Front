@@ -152,6 +152,20 @@ class Home extends Component {
     ) {
       return <div />;
     }
+
+    const colors = [
+      "#845EC2",
+      "#D65DB1",
+      "#FF6F91",
+      "#FF9671",
+      "#FFC75F",
+      "#00E1F1",
+      "#06EDD4",
+      "#73F6AF",
+      "#B8FA8A",
+      "#F9F871"
+    ];
+
     return (
       <main className={this.props.classes.content}>
         <div className={this.props.classes.appBarSpacer} />
@@ -247,6 +261,9 @@ class Home extends Component {
                       this.state.keys[dataField] === undefined
                         ? "default"
                         : "primary";
+                    console.log(
+                      Object.keys(this.state.keys).indexOf(dataField) % 2
+                    );
                     return (
                       <Grid item key={dataField}>
                         <Button
@@ -256,7 +273,18 @@ class Home extends Component {
                             return this.onButtonClick(dataField);
                           }}
                           variant="contained"
-                          color={color}
+                          style={
+                            this.state.keys[dataField]
+                              ? {
+                                  backgroundColor:
+                                    colors[
+                                      Object.keys(this.state.keys).indexOf(
+                                        dataField
+                                      ) % colors.length
+                                    ]
+                                }
+                              : {}
+                          }
                         >
                           {dataField.charAt(0).toUpperCase() +
                             dataField
@@ -294,7 +322,18 @@ class Home extends Component {
                             return this.onButtonClick(dataField);
                           }}
                           variant="contained"
-                          color={color}
+                          style={
+                            this.state.keys[dataField]
+                              ? {
+                                  backgroundColor:
+                                    colors[
+                                      Object.keys(this.state.keys).indexOf(
+                                        dataField
+                                      ) % colors.length
+                                    ]
+                                }
+                              : {}
+                          }
                         >
                           {dataField
                             .replace(/([A-Z])/g, " $1")
