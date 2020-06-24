@@ -12,6 +12,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { updateState, updateLabel } from "../../redux/actions";
+import { MobileView } from "react-device-detect";
 import DateFnsUtils from "@date-io/date-fns";
 import moment from "moment";
 import {
@@ -344,6 +345,9 @@ class Home extends Component {
             </Grid>
           </Grid>
         </Container>
+        <MobileView>
+          <Footer />
+        </MobileView>
       </main>
     );
   }
