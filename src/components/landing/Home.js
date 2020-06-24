@@ -41,6 +41,10 @@ const useStyles = theme => ({
     marginTop: "auto",
     flexGrow: 4
   },
+  buttonRoot: {
+    textTransform: "none",
+    padding: "5px 10px"
+  },
   center: {
     flexGrow: 1,
     justifyContent: "center"
@@ -49,12 +53,6 @@ const useStyles = theme => ({
     display: "flex",
     flexDirection: "column",
     height: "68vh"
-  },
-  padIt: {
-    marginTop: "5px",
-    marginBottom: "2px",
-    marginLeft: "4px",
-    marginRight: "1px"
   },
   content: {
     flexGrow: 1,
@@ -249,17 +247,27 @@ class Home extends Component {
                         ? "default"
                         : "primary";
                     return (
-                      <Grid item>
+                      <Grid item key={dataField}>
                         <Button
-                          key={dataField}
                           size="small"
+                          classes={{ root: this.props.classes.buttonRoot }}
                           onClick={e => {
                             return this.onButtonClick(dataField);
                           }}
                           variant="contained"
                           color={color}
                         >
-                          {dataField.replace(/([A-Z])/g, " $1").trim()}
+                          {dataField.charAt(0).toUpperCase() +
+                            dataField
+                              .replace(/([A-Z])/g, " $1")
+                              .trim()
+                              .replace("total ", "")
+                              .replace("Currently", "Now")
+                              .replace(" Cumulative", "")
+                              .replace("Increase", "Inc")
+                              .replace("Ventilator", "Vent")
+                              .replace(" Results", "ing")
+                              .slice(1)}
                         </Button>
                       </Grid>
                     );
@@ -277,17 +285,20 @@ class Home extends Component {
                         ? "default"
                         : "primary";
                     return (
-                      <Grid item>
+                      <Grid item key={dataField}>
                         <Button
-                          key={dataField}
                           size="small"
+                          classes={{ root: this.props.classes.buttonRoot }}
                           onClick={e => {
                             return this.onButtonClick(dataField);
                           }}
                           variant="contained"
                           color={color}
                         >
-                          {dataField.replace(/([A-Z])/g, " $1").trim()}
+                          {dataField
+                            .replace(/([A-Z])/g, " $1")
+                            .trim()
+                            .replace("percent", "%")}
                         </Button>
                       </Grid>
                     );

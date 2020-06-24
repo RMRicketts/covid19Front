@@ -49,7 +49,7 @@ export const getData = query => {
           Math.round(
             (row.onVentilatorCurrently / row.hospitalizedCurrently) * 1000
           ) / 10;
-        row.percentInICU =
+        row.percentInIcu =
           Math.round((row.inIcuCurrently / row.hospitalizedCurrently) * 1000) /
           10;
         row.percentIcuOnVent =
