@@ -207,86 +207,92 @@ class Home extends Component {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={10}>
-              {Object.keys(this.props.data[this.props.state][0])
-                .sort()
-                .filter(field => {
-                  return (
-                    field !== "date" &&
-                    field !== "state" &&
-                    field !== "hash" &&
-                    field !== "dateObj" &&
-                    field !== "dateChecked" &&
-                    field !== "pending" &&
-                    field !== "states" &&
-                    field !== "dataQualityGrade" &&
-                    field !== "checkTimeEt" &&
-                    field !== "dateModified" &&
-                    field !== "fips" &&
-                    field !== "grade" &&
-                    field !== "commercialScore" &&
-                    field !== "score" &&
-                    field !== "total" &&
-                    field !== "negative" &&
-                    field !== "negativeIncrease" &&
-                    field !== "negativeScore" &&
-                    field !== "negativeTestsViral" &&
-                    field !== "posNeg" &&
-                    field !== "negativeRegularScore" &&
-                    field !== "lastUpdateEt" &&
-                    field !== "positiveScore" &&
-                    field !== "positiveCasesViral" &&
-                    field !== "positiveTestsViral" &&
-                    field !== "totalTestsViral" &&
-                    field !== "hospitalized" &&
-                    field !== "lastModified" &&
-                    !field.match(new RegExp("percent", "ig"))
-                  );
-                })
-                .map(dataField => {
-                  let color =
-                    this.state.keys[dataField] === undefined
-                      ? "default"
-                      : "primary";
-                  return (
-                    <Button
-                      key={dataField}
-                      size="small"
-                      className={this.props.classes.padIt}
-                      onClick={e => {
-                        return this.onButtonClick(dataField);
-                      }}
-                      variant="contained"
-                      color={color}
-                    >
-                      {dataField.replace(/([A-Z])/g, " $1").trim()}
-                    </Button>
-                  );
-                })}
-              {Object.keys(this.props.data[this.props.state][0])
-                .sort()
-                .filter(field => {
-                  return field.match(new RegExp("percent", "ig"));
-                })
-                .map(dataField => {
-                  let color =
-                    this.state.keys[dataField] === undefined
-                      ? "default"
-                      : "primary";
-                  return (
-                    <Button
-                      key={dataField}
-                      size="small"
-                      className={this.props.classes.padIt}
-                      onClick={e => {
-                        return this.onButtonClick(dataField);
-                      }}
-                      variant="contained"
-                      color={color}
-                    >
-                      {dataField.replace(/([A-Z])/g, " $1").trim()}
-                    </Button>
-                  );
-                })}
+              <Grid container justify="space-around" spacing={1}>
+                {Object.keys(this.props.data[this.props.state][0])
+                  .sort()
+                  .filter(field => {
+                    return (
+                      field !== "date" &&
+                      field !== "state" &&
+                      field !== "hash" &&
+                      field !== "dateObj" &&
+                      field !== "dateChecked" &&
+                      field !== "pending" &&
+                      field !== "states" &&
+                      field !== "dataQualityGrade" &&
+                      field !== "checkTimeEt" &&
+                      field !== "dateModified" &&
+                      field !== "fips" &&
+                      field !== "grade" &&
+                      field !== "commercialScore" &&
+                      field !== "score" &&
+                      field !== "total" &&
+                      field !== "negative" &&
+                      field !== "negativeIncrease" &&
+                      field !== "negativeScore" &&
+                      field !== "negativeTestsViral" &&
+                      field !== "posNeg" &&
+                      field !== "negativeRegularScore" &&
+                      field !== "lastUpdateEt" &&
+                      field !== "positiveScore" &&
+                      field !== "positiveCasesViral" &&
+                      field !== "positiveTestsViral" &&
+                      field !== "totalTestsViral" &&
+                      field !== "hospitalized" &&
+                      field !== "lastModified" &&
+                      !field.match(new RegExp("percent", "ig"))
+                    );
+                  })
+                  .map(dataField => {
+                    let color =
+                      this.state.keys[dataField] === undefined
+                        ? "default"
+                        : "primary";
+                    return (
+                      <Grid item>
+                        <Button
+                          key={dataField}
+                          size="small"
+                          onClick={e => {
+                            return this.onButtonClick(dataField);
+                          }}
+                          variant="contained"
+                          color={color}
+                        >
+                          {dataField.replace(/([A-Z])/g, " $1").trim()}
+                        </Button>
+                      </Grid>
+                    );
+                  })}
+              </Grid>
+              <Grid container justify="space-around" spacing={1}>
+                {Object.keys(this.props.data[this.props.state][0])
+                  .sort()
+                  .filter(field => {
+                    return field.match(new RegExp("percent", "ig"));
+                  })
+                  .map(dataField => {
+                    let color =
+                      this.state.keys[dataField] === undefined
+                        ? "default"
+                        : "primary";
+                    return (
+                      <Grid item>
+                        <Button
+                          key={dataField}
+                          size="small"
+                          onClick={e => {
+                            return this.onButtonClick(dataField);
+                          }}
+                          variant="contained"
+                          color={color}
+                        >
+                          {dataField.replace(/([A-Z])/g, " $1").trim()}
+                        </Button>
+                      </Grid>
+                    );
+                  })}
+              </Grid>
             </Grid>
             <Grid className={this.props.classes.pushToEnd} item xs={12} md={2}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>

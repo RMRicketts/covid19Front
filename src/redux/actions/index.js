@@ -30,7 +30,7 @@ export const getData = query => {
         row.dateObj = new Date(
           `${d.substr(0, 4)}-${d.substr(4, 2)}-${d.substr(6, 2)}`
         );
-        row.date = moment.utc(row.dateObj).format('M-D-YY')
+        row.date = moment.utc(row.dateObj).format('M-D')
         //row.date = `${d.substr(4, 2)}-${d.substr(6, 2)}-${d.substr(0, 4)}`;
         if (mappedData[row.state] === undefined) {
           mappedData[row.state] = [];
