@@ -327,7 +327,6 @@ class Home extends Component {
             </Grid>
           </Grid>
         </Container>
-        <Footer />
       </main>
     );
   }
