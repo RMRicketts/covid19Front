@@ -8,6 +8,13 @@ import Home from "./landing/Home";
 import Today from "./landing/Today";
 import Landing from "./landing/Landing";
 import { getData } from "../redux/actions";
+import { withStyles } from "@material-ui/core/styles";
+
+const useStyles = theme => ({
+  appColor: {
+    background: "#fefefa",
+  }
+});
 
 class App extends React.Component {
   componentDidMount() {
@@ -16,7 +23,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={this.props.classes.appColor}>
         <Navbar />
         <main>
           <Route exact path="/" component={Landing} />
@@ -35,5 +42,5 @@ export default withRouter(
   connect(
     null,
     mapDispatchToProps
-  )(App)
+  )(withStyles(useStyles)(App))
 );

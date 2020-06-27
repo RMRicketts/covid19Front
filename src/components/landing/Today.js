@@ -21,6 +21,7 @@ const useStyles = theme => ({
     height: "64vh"
   },
   content: {
+    background: "#e0e0e0",
     flexGrow: 1,
     height: "89vh"
   }
@@ -47,7 +48,7 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    this.props.updateLabel(`Today's Data`)
+    this.props.updateLabel(`Today`);
     if (this.props.data === undefined) {
       try {
         await this.getData();
@@ -59,7 +60,7 @@ class Home extends Component {
     let { data } = this.props;
     let tabdat = [];
     for (let key of Object.keys(this.props.data)) {
-      if (key !== "United States") {
+      if (key !== "USA") {
         let {
           state,
           positive,
@@ -81,7 +82,7 @@ class Home extends Component {
           hospitalizedCurrently
         };
         row = JSON.parse(JSON.stringify(data[key][data[key].length - 1]));
-        delete row.date
+        delete row.date;
         tabdat.push(row);
       }
     }
@@ -100,7 +101,7 @@ class Home extends Component {
               <Grid item xs={12}>
                 <Table
                   data={this.state.tableData}
-                  title={`Today's stats`}
+                  title={`Today`}
                   key={"state"}
                 />
               </Grid>
@@ -113,12 +114,15 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-  data: state.getData.covidData,
+  data: state.getData.covidData
 });
 
 const mapDispatchToProps = (dispatch, props) =>
   bindActionCreators({ getData, loadStates, updateLabel }, dispatch);
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(Home))
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(useStyles)(Home))
 );

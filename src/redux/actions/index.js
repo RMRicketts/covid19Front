@@ -24,13 +24,38 @@ export const getData = query => {
     for (let set of responses) {
       for (let row of set) {
         if (row.state === undefined) {
-          row.state = "United States";
+          row.state = "USA";
         }
         let d = row.date.toString();
         row.dateObj = new Date(
           `${d.substr(0, 4)}-${d.substr(4, 2)}-${d.substr(6, 2)}`
         );
-        row.date = moment.utc(row.dateObj).format("M-D");
+        row.date = moment.utc(row.dateObj).format("  M-D  ");
+        delete row.hash;
+        delete row.dateChecked;
+        delete row.pending;
+        delete row.states;
+        delete row.dataQualityGrade;
+        delete row.checkTimeEt;
+        delete row.dateModified;
+        delete row.fips;
+        delete row.grade;
+        delete row.commercialScore;
+        delete row.score;
+        delete row.total;
+        delete row.negative;
+        delete row.negativeIncrease;
+        delete row.negativeScore;
+        delete row.negativeTestsViral;
+        delete row.posNeg;
+        delete row.negativeRegularScore;
+        delete row.lastUpdateEt;
+        delete row.positiveScore;
+        delete row.positiveCasesViral;
+        delete row.positiveTestsViral;
+        delete row.totalTestsViral;
+        delete row.hospitalized;
+        delete row.lastModified;
         //row.date = `${d.substr(4, 2)}-${d.substr(6, 2)}-${d.substr(0, 4)}`;
         if (mappedData[row.state] === undefined) {
           mappedData[row.state] = [];

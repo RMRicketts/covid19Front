@@ -94,12 +94,12 @@ const Navbar = props => {
                 <MenuItem
                   key="today"
                   onClick={e => {
-                    props.updateLabel("Today's Date");
+                    props.updateLabel("Today");
                     handleClose(e);
                   }}
                   component={Link}
                   to={`/reports/data/today`}
-                >{`Today's Data`}</MenuItem>
+                >{`Today`}</MenuItem>
                 {props.states.map(state => {
                   return (
                     <MenuItem

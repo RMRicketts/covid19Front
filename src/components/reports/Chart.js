@@ -30,6 +30,7 @@ class CustomizedAxisTick extends React.PureComponent {
           y={0}
           dy={oo}
           dx={ox}
+          fontSize={12}
           textAnchor="end"
           fill="#666"
           transform={`rotate(-${rotate})`}
@@ -58,7 +59,7 @@ export default function Chart(props) {
   return (
     <React.Fragment>
       <Title>{props.title}</Title>
-      <ResponsiveContainer>
+      <ResponsiveContainer height="93%">
         <LineChart
           data={props.data}
           margin={{
@@ -73,7 +74,7 @@ export default function Chart(props) {
             height={60}
             tick={<CustomizedAxisTick rotate={0} oo={16} ox={10} />}
           />
-          <YAxis tick={<CustomizedAxisTick rotate={0} oo={0} ox={0} />} />
+          <YAxis tick={<CustomizedAxisTick rotate={0} oo={3} ox={0} />} />
           <Tooltip />
           {props.keys.map((key, i) => {
             return (

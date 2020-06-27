@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 
 class Landing extends React.Component {
   componentDidMount() {
-    this.props.history.push('/reports/trends/United States')
+    this.props.history.push('/reports/trends/USA')
   }
 
   render() {

@@ -14,7 +14,8 @@ import Title from "./Title";
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
-    overflowX: "auto"
+    overflowX: "auto",
+    background: '#e0e0e0'
   },
   table: {
     minWidth: 650

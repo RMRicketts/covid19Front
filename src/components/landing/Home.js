@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import Footer from "../Footer";
 import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import FormControl from "@material-ui/core/FormControl";
@@ -21,45 +20,47 @@ import {
 } from "@material-ui/pickers";
 import Chart from "../reports/Chart.js";
 
-const useStyles = theme => ({
-  appBarSpacer: theme.mixins.toolbar,
-  button: {
-    margin: theme.spacing(1)
-  },
-  input: {
-    display: "none"
-  },
-  container: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1)
-  },
-  pushToEnd: {
-    display: "flex",
-    justifyContent: "flex-end"
-  },
-  flex: {
-    display: "flex",
-    marginTop: "auto",
-    flexGrow: 4
-  },
-  buttonRoot: {
-    textTransform: "none",
-    padding: "5px 10px"
-  },
-  center: {
-    flexGrow: 1,
-    justifyContent: "center"
-  },
-  paperxl: {
-    display: "flex",
-    flexDirection: "column",
-    height: "68vh"
-  },
-  content: {
-    flexGrow: 1,
-    height: "89vh"
-  }
-});
+const useStyles = theme => {
+  console.log(theme.palette.primary);
+  return {
+    appBarSpacer: theme.mixins.toolbar,
+    button: {
+      margin: theme.spacing(1)
+    },
+    input: {
+      display: "none"
+    },
+    container: {
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1)
+    },
+    pushToEnd: {
+      display: "flex",
+      justifyContent: "flex-end"
+    },
+    flex: {
+      display: "flex",
+      marginTop: "auto",
+      flexGrow: 4
+    },
+    buttonRoot: {
+      textTransform: "none",
+      padding: "5px 10px"
+    },
+    center: {
+      flexGrow: 1,
+      justifyContent: "center"
+    },
+    paperxl: {
+      height: "68vh"
+    },
+    content: {
+      background: "#e0e0e0",
+      flexGrow: 1,
+      height: "89vh"
+    }
+  };
+};
 
 class Home extends Component {
   constructor(props) {
@@ -169,7 +170,7 @@ class Home extends Component {
     return (
       <main className={this.props.classes.content}>
         <div className={this.props.classes.appBarSpacer} />
-        <Container maxWidth="xl" className={this.props.classes.container}>
+        <Container maxWidth="lg" className={this.props.classes.container}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <FormControl fullWidth>
@@ -225,45 +226,18 @@ class Home extends Component {
                   .sort()
                   .filter(field => {
                     return (
-                      field !== "date" &&
-                      field !== "state" &&
-                      field !== "hash" &&
-                      field !== "dateObj" &&
-                      field !== "dateChecked" &&
-                      field !== "pending" &&
-                      field !== "states" &&
-                      field !== "dataQualityGrade" &&
-                      field !== "checkTimeEt" &&
-                      field !== "dateModified" &&
-                      field !== "fips" &&
-                      field !== "grade" &&
-                      field !== "commercialScore" &&
-                      field !== "score" &&
-                      field !== "total" &&
-                      field !== "negative" &&
-                      field !== "negativeIncrease" &&
-                      field !== "negativeScore" &&
-                      field !== "negativeTestsViral" &&
-                      field !== "posNeg" &&
-                      field !== "negativeRegularScore" &&
-                      field !== "lastUpdateEt" &&
-                      field !== "positiveScore" &&
-                      field !== "positiveCasesViral" &&
-                      field !== "positiveTestsViral" &&
-                      field !== "totalTestsViral" &&
-                      field !== "hospitalized" &&
-                      field !== "lastModified" &&
+                      (field === "active" ||
+                        field === "death" ||
+                        field === "positive" ||
+                        field === "recovered" ||
+                        field === "hospitalizedCurrently" ||
+                        field === "inIcuCurrently" ||
+                        field === "onVentilatorCurrently" ||
+                        field === "totalTestResults") &&
                       !field.match(new RegExp("percent", "ig"))
                     );
                   })
                   .map(dataField => {
-                    let color =
-                      this.state.keys[dataField] === undefined
-                        ? "default"
-                        : "primary";
-                    console.log(
-                      Object.keys(this.state.keys).indexOf(dataField) % 2
-                    );
                     return (
                       <Grid item key={dataField}>
                         <Button
@@ -292,9 +266,53 @@ class Home extends Component {
                               .trim()
                               .replace("total ", "")
                               .replace("Currently", "Now")
-                              .replace(" Cumulative", "")
-                              .replace("Increase", "Inc")
                               .replace("Ventilator", "Vent")
+                              .replace(" Results", "ing")
+                              .slice(1)}
+                        </Button>
+                      </Grid>
+                    );
+                  })}
+              </Grid>
+              <Grid container justify="space-around" spacing={1}>
+                {Object.keys(this.props.data[this.props.state][0])
+                  .sort()
+                  .filter(field => {
+                    return (
+                      (field === "positiveIncrease" ||
+                        field === "deathIncrease" ||
+                        field === "totalTestResultsIncrease") &&
+                      !field.match(new RegExp("percent", "ig"))
+                    );
+                  })
+                  .map(dataField => {
+                    return (
+                      <Grid item key={dataField}>
+                        <Button
+                          size="small"
+                          classes={{ root: this.props.classes.buttonRoot }}
+                          onClick={e => {
+                            return this.onButtonClick(dataField);
+                          }}
+                          variant="contained"
+                          style={
+                            this.state.keys[dataField]
+                              ? {
+                                  backgroundColor:
+                                    colors[
+                                      Object.keys(this.state.keys).indexOf(
+                                        dataField
+                                      ) % colors.length
+                                    ]
+                                }
+                              : {}
+                          }
+                        >
+                          {dataField.charAt(0).toUpperCase() +
+                            dataField
+                              .replace(/([A-Z])/g, " $1")
+                              .trim()
+                              .replace("total ", "")
                               .replace(" Results", "ing")
                               .slice(1)}
                         </Button>
@@ -309,10 +327,6 @@ class Home extends Component {
                     return field.match(new RegExp("percent", "ig"));
                   })
                   .map(dataField => {
-                    let color =
-                      this.state.keys[dataField] === undefined
-                        ? "default"
-                        : "primary";
                     return (
                       <Grid item key={dataField}>
                         <Button
@@ -367,19 +381,14 @@ class Home extends Component {
               {Object.keys(this.state.keys).length < 1 ? (
                 <div />
               ) : (
-                <Paper className={this.props.classes.paperxl}>
-                  {this.props.state === "" ? (
-                    <div />
-                  ) : (
-                    <Chart
-                      data={this.props.data[this.props.state].slice(
-                        -this.state.daysBack
-                      )}
-                      title={`${this.props.state}`}
-                      keys={Object.keys(this.state.keys)}
-                    />
-                  )}
-                </Paper>
+                  <Chart
+                    className={this.props.classes.paperxl}
+                    data={this.props.data[this.props.state].slice(
+                      -this.state.daysBack
+                    )}
+                    title={`${this.props.state}`}
+                    keys={Object.keys(this.state.keys)}
+                  />
               )}
             </Grid>
           </Grid>
