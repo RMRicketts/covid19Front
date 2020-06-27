@@ -51,11 +51,8 @@ const useStyles = theme => {
       flexGrow: 1,
       justifyContent: "center"
     },
-    paperxl: {
-      height: "68vh"
-    },
     content: {
-      background: "#e0e0e0",
+      background: "#f0f0f0",
       flexGrow: 1,
       height: "89vh"
     }
@@ -382,7 +379,6 @@ class Home extends Component {
                 <div />
               ) : (
                   <Chart
-                    className={this.props.classes.paperxl}
                     data={this.props.data[this.props.state].slice(
                       -this.state.daysBack
                     )}

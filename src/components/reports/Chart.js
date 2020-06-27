@@ -59,7 +59,7 @@ export default function Chart(props) {
   return (
     <React.Fragment>
       <Title>{props.title}</Title>
-      <ResponsiveContainer height="93%">
+      <ResponsiveContainer height="91%">
         <LineChart
           data={props.data}
           margin={{
