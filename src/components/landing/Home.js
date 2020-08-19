@@ -21,7 +21,6 @@ import {
 import Chart from "../reports/Chart.js";
 
 const useStyles = theme => {
-  console.log(theme.palette.primary);
   return {
     appBarSpacer: theme.mixins.toolbar,
     button: {

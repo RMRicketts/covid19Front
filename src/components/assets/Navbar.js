@@ -133,9 +133,6 @@ const Navbar = props => {
               <GetAppIcon />
             </Button>
           )}
-          <IconButton color="inherit" onClick={clickPatreon}>
-            <Patreon />
-          </IconButton>
           <IconButton color="inherit" onClick={clickSourceCode}>
             <GitHubIcon />
           </IconButton>
